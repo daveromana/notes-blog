@@ -5,13 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Swap Using Reference - learn</title>
+  <title>/udev notes - learn</title>
   <meta name="author" content="Ankit">
 
   
-  <meta name="description" content="Problem: Write a method to swap two integers passed by reference. #include &lt;iostream&gt;
-// swap using pointers
-void swap(int &amp;a, int &amp;b &hellip;">
+  <meta name="description" content="Problems with /dev A static /dev is unwiedly big. It would be nice to show only /dev enteries for the devices that we acutally have running in the &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +18,7 @@ void swap(int &amp;a, int &amp;b &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://goyalankit.github.io/notes-blog/blog/2014/08/31/swap-using-reference">
+  <link rel="canonical" href="http://goyalankit.github.io/notes-blog/blog/2014/09/04/slash-udev-notes">
   <link href="/notes-blog/favicon.png" rel="icon">
   <link href="/notes-blog/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="source/atom.xml" rel="alternate" title="learn" type="application/atom+xml">
@@ -54,7 +52,7 @@ void swap(int &amp;a, int &amp;b &hellip;">
   
   <header>
     
-      <h1 class="entry-title">Swap Using Reference</h1>
+      <h1 class="entry-title">/udev Notes</h1>
     
     
       <p class="meta">
@@ -70,34 +68,68 @@ void swap(int &amp;a, int &amp;b &hellip;">
   
 
 
-<time datetime="2014-08-31T21:01:18-05:00" pubdate data-updated="true"></time>
+<time datetime="2014-09-04T02:13:15-05:00" pubdate data-updated="true"></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><div class='problem-box'> <b> Problem: </b> Write a method to swap two integers passed by reference. </div>
+<div class="entry-content"><h3>Problems with <code>/dev</code></h3>
+
+<ol>
+<li>A static /dev is unwiedly big. It would be nice to show only /dev enteries for the devices that we acutally have running in the system.</li>
+<li>We are running out of major and minor number for devices.</li>
+</ol>
 
 
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>  <span class="o">[</span>vagrant@vagrant-centos64 ~<span class="o">]</span><span class="nv">$ </span>ls -l /dev/sda
+</span><span class='line'>  brw-rw---- <span class="m">1</span> root disk 8, <span class="m">0</span> Aug <span class="m">14</span> 05:36 /dev/sda
+</span><span class='line'>
+</span><span class='line'>  <span class="c"># shows permissions (brw-rw---- ), owner (root), group (disk), major device number (8), </span>
+</span><span class='line'>    minor device number <span class="o">(</span>0<span class="o">)</span>, date <span class="o">(</span>Aug 14<span class="o">)</span>, hour <span class="o">(</span>05:36<span class="o">)</span> and device name
+</span></code></pre></td></tr></table></div></figure>
 
 
-<div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp">#include &lt;iostream&gt;</span>
-<span class="c1">// swap using pointers</span>
-<span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="kt">int</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">b</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kt">int</span> <span class="n">temp</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
-  <span class="n">a</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>
-  <span class="n">b</span> <span class="o">=</span> <span class="n">temp</span><span class="p">;</span>
-<span class="p">}</span>
+<p>  When accessing a device file, the major device number selects which device driver is being called to perform read/write. Minor number is passed as a parameter and its usage/interpretations depends on the driver.<br/></p>
 
-<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-  <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
-  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;a = &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, b = &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">b</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-  <span class="n">swap</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">);</span>
-  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;a = &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;, b = &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">b</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-  <span class="k">return</span> <span class="n">EXIT_SUCCESS</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
+<ol>
+<li>Users want a way to name devices in persistant fashion.</li>
+<li>Userspace programs wants to know what devices are created or removed and what /dev entry is associated with them.</li>
+</ol>
+
+
+<h3><code>udev</code></h3>
+
+<p>Presentation on udev: <a href="http://www.kroah.com/linux/talks/ols_2003_udev_talk/mgp00001.html">http://www.kroah.com/linux/talks/ols_2003_udev_talk/mgp00001.html</a></p>
+
+<ol>
+<li>the /dev tree is populated only for devices that are currently present in the system.</li>
+<li>udev doesn&rsquo;t care about major or minor number schemes.</li>
+<li>It provides ability to name devices persistently.</li>
+<li>udev emites D-BUS messages so that any userspace program can listen to what devices are created or removed. Userspace programs can also query the database to see what devices are present and what they are currently named.</li>
+</ol>
+
+
+<h3>Dynamic <code>/dev</code></h3>
+
+<p>The content of /dev directory are stored on a temporary file system and all files are render at every system startup. Static files that should always be present in /dev directory can be placed in /lib/udev/devices directory. All the contents of /lib/udev/devices directory are copied to /dev at startup.</p>
+
+<blockquote><p>how does kernel knows which device driver to choose without major or minor device number.</p></blockquote>
+
+<p>The kernel bus drivers probe for devices. For every detected devices kernel creates an internal device structure and sends a uevent to udev deamon. Each devices identifies itself by specially-formatted ID, which tells what kind of device it is. It usually consists of vendor ID, product ID and other subsystem specific values.</p>
+
+<p><code>/etc/udev/rules.d/*.rules</code> contains rules for different devices and <code>udev</code> deamon parses and loads all of them at the startup.</p>
+
+<p>More Info at:
+<a href="http://doc.opensuse.org/products/draft/SLES/SLES-admin_sd_draft/cha.udev.html#sec.udev.devdir">http://doc.opensuse.org/products/draft/SLES/SLES-admin_sd_draft/cha.udev.html#sec.udev.devdir</a></p>
+
+<hr/>
 
 
 
@@ -123,12 +155,12 @@ void swap(int &amp;a, int &amp;b &hellip;">
   
 
 
-<time datetime="2014-08-31T21:01:18-05:00" pubdate data-updated="true"></time>
+<time datetime="2014-09-04T02:13:15-05:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/notes-blog/blog/categories/cpp/'>cpp</a>, <a class='category' href='/notes-blog/blog/categories/pointers/'>pointers</a>
+    <a class='category' href='/notes-blog/blog/categories/filesystem/'>filesystem</a>, <a class='category' href='/notes-blog/blog/categories/unix/'>unix</a>
   
 </span>
 
@@ -137,7 +169,7 @@ void swap(int &amp;a, int &amp;b &hellip;">
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://goyalankit.github.io/notes-blog/blog/2014/08/31/swap-using-reference/" data-via="_goyalankit" data-counturl="http://goyalankit.github.io/notes-blog/blog/2014/08/31/swap-using-reference/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://goyalankit.github.io/notes-blog/blog/2014/09/04/slash-udev-notes/" data-via="_goyalankit" data-counturl="http://goyalankit.github.io/notes-blog/blog/2014/09/04/slash-udev-notes/" >Tweet</a>
   
   
   
@@ -146,10 +178,8 @@ void swap(int &amp;a, int &amp;b &hellip;">
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/notes-blog/blog/2014/08/31/hola-mundo/" title="Previous Post: hola mundo">&laquo; hola mundo</a>
+        <a class="basic-alignment left" href="/notes-blog/blog/2014/09/03/the-unix-time-sharing-system-notes/" title="Previous Post: The Unix Time-Sharing System Notes">&laquo; The Unix Time-Sharing System Notes</a>
       
-      
-        <a class="basic-alignment right" href="/notes-blog/blog/2014/08/31/unique-abbreviation-for-a-list-of-words/" title="Next Post: Unique Abbreviation for a list of words">Unique Abbreviation for a list of words &raquo;</a>
       
     </p>
   </footer>
@@ -244,8 +274,8 @@ void swap(int &amp;a, int &amp;b &hellip;">
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://goyalankit.github.io/notes-blog/blog/2014/08/31/swap-using-reference/';
-        var disqus_url = 'http://goyalankit.github.io/notes-blog/blog/2014/08/31/swap-using-reference/';
+        var disqus_identifier = 'http://goyalankit.github.io/notes-blog/blog/2014/09/04/slash-udev-notes/';
+        var disqus_url = 'http://goyalankit.github.io/notes-blog/blog/2014/09/04/slash-udev-notes/';
         var disqus_script = 'embed.js';
       
     (function () {

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: unix | learn]]></title>
-  <link href="http://goyalankit.github.io/notes-blog/blog/categories/unix/atom.xml" rel="self"/>
+  <title><![CDATA[Category: filesystem | learn]]></title>
+  <link href="http://goyalankit.github.io/notes-blog/blog/categories/filesystem/atom.xml" rel="self"/>
   <link href="http://goyalankit.github.io/notes-blog/"/>
   <updated>2014-09-04T02:37:29-05:00</updated>
   <id>http://goyalankit.github.io/notes-blog/</id>
