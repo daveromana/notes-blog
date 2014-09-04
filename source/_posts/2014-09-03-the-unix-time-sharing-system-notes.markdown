@@ -24,4 +24,48 @@ From the user's point of view, three kinds of files:
     * Each directory has atleast two enteries with name '.' and '..' referring to current and parent directories resp.
     * The directory structure is constrained to have a rooted tree structure.
     * Cycles are not allowed in the file system. However Kernel mainains two restricted types of cycles in each directory: `.` and `..`
-3. special files.
+3. **special files**: Each I/O device supported by UNIX is associated with at least one such file. Special files are read and written just like ordinary files. However, request to these files leads to activation of the associated device. An entry for each special devices exists in `/dev`.
+
+### Removable File Systems
+
+It is not necessary that the entire file system hierarchy reside on this device.
+
+`mount` causes the heretofore ordinary file to refer instead to the root directory of the file system on the removable volume. In effect, mount replaces a leaf of the hierarchy tree by a whole new subtree.
+
+- No link may exist between one file system hierarchy and another.
+- **'..'** refers to the directory itself instead to its parent.
+
+### Protection
+
+1. Each user is assigned a unique user identification number. When a file is created it is marked with the user ID of the owner.
+2. 10 bits are used. 9 bits are used for R/W/X for self, group and others.
+3. if the 10th bit is on, the system will temporarily change the user ID to the user ID of the user that created the file.
+
+### I/O Calls
+
+1. There is no distinction between random and sequential I/O, nor is any logical record size imposed by system.
+2. The size of the ordinary file is determined by the highest byte written on it; no predetermination of the size of a file is necessary or possible.
+3. open / create system calls opens / creates file. There are no user-visible locks in the file system, nor is there any restriction on the number of users who may have a file open for reading or writing. The text may be scrambled if multiple users are writing at the same time.
+4. System has sufficient interlocks present internally to maintain the logical consistency of the file system when two users are writing on same file, creating files in the same directory or deleting each other's open files.
+
+### Implementation of the File System
+
+```
+Directory:
+  filename -> pointer to file info [called i-number]
+```
+
+When a file is accessed, it's **i-number** is used as an index into a system table (the **i-list**)
+
+```
+users/myfile
+
+Directory: users
+myfile -> 4;
+
+i-list (system table)
+0 - i-node1
+1 - i-node2
+...
+4 - i-node4
+```
