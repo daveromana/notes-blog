@@ -4,7 +4,7 @@
   <title><![CDATA[learn]]></title>
   <link href="http://goyalankit.github.io/notes-blog/atom.xml" rel="self"/>
   <link href="http://goyalankit.github.io/notes-blog/"/>
-  <updated>2014-09-03T22:33:31-05:00</updated>
+  <updated>2014-09-03T22:50:12-05:00</updated>
   <id>http://goyalankit.github.io/notes-blog/</id>
   <author>
     <name><![CDATA[Ankit]]></name>
@@ -12,52 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[python notes]]></title>
-    <link href="http://goyalankit.github.io/notes-blog/blog/2014/09/03/python-notes/"/>
-    <updated>2014-09-03T12:14:40-05:00</updated>
-    <id>http://goyalankit.github.io/notes-blog/blog/2014/09/03/python-notes</id>
-    <content type="html"><![CDATA[<p>&lsquo;,&rsquo; acts as a delimeter for tuple.
-print 1,000,000
-1 0 0</p>
-
-<p>&lsquo;is&rsquo; is by reference in Python</p>
-
-<p>python strings are immutable</p>
-
-<p>string builder equivalent in python.</p>
-
-<p>Python doesn&rsquo;t have a switch</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">Check</span><span class="p">:</span> <span class="n">python</span> <span class="n">caches</span> <span class="n">numbers</span> <span class="kn">from</span> <span class="o">-</span><span class="mi">5</span> <span class="n">to</span> <span class="mi">255</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">a</span> <span class="o">=</span> <span class="mi">12312313</span>
-</span><span class='line'><span class="n">c</span> <span class="o">=</span> <span class="mi">12312313</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">a</span> <span class="ow">is</span> <span class="n">c</span> <span class="c">#False</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">a</span> <span class="o">=</span> <span class="mi">12</span>
-</span><span class='line'><span class="n">c</span> <span class="o">=</span> <span class="mi">21</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">a</span> <span class="ow">is</span> <span class="n">c</span> <span class="c">#True</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[The Unix Time-Sharing System Notes]]></title>
