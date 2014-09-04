@@ -4,7 +4,7 @@
   <title><![CDATA[Category: unix | learn]]></title>
   <link href="http://goyalankit.github.io/notes-blog/blog/categories/unix/atom.xml" rel="self"/>
   <link href="http://goyalankit.github.io/notes-blog/"/>
-  <updated>2014-09-03T22:50:12-05:00</updated>
+  <updated>2014-09-03T23:12:37-05:00</updated>
   <id>http://goyalankit.github.io/notes-blog/</id>
   <author>
     <name><![CDATA[Ankit]]></name>
@@ -104,6 +104,8 @@ i-list (system table)
 ...
 4 - i-node4
 </code></pre>
+
+<h4>i-node</h4>
 ]]></content>
   </entry>
   
