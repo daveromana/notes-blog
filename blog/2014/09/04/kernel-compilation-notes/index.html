@@ -5,11 +5,21 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>/udev notes - learn</title>
+  <title>kernel compilation notes - learn</title>
   <meta name="author" content="Ankit">
 
   
-  <meta name="description" content="Problems with /dev A static /dev is unwiedly big. It would be nice to show only /dev enteries for the devices that we acutally have running in the &hellip;">
+  <meta name="description" content="Install KVM and it&rsquo;s dependencies.
+Create a Ubuntu VM using VMBuilder 1
+2
+3
+4
+5
+6
+7
+8
+9
+sudo vmbuilder kvm ubuntu \ --arch i386 \ --user ankit &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +28,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://goyalankit.github.io/notes-blog/blog/2014/09/04/slash-udev-notes">
+  <link rel="canonical" href="http://goyalankit.github.io/notes-blog/blog/2014/09/04/kernel-compilation-notes">
   <link href="/notes-blog/favicon.png" rel="icon">
   <link href="/notes-blog/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="atom.xml" rel="alternate" title="learn" type="application/atom+xml">
@@ -52,7 +62,7 @@
   
   <header>
     
-      <h1 class="entry-title">/udev Notes</h1>
+      <h1 class="entry-title">Kernel Compilation Notes</h1>
     
     
       <p class="meta">
@@ -68,19 +78,17 @@
   
 
 
-<time datetime="2014-09-04T02:13:15-05:00" pubdate data-updated="true"></time>
+<time datetime="2014-09-04T15:57:47-05:00" pubdate data-updated="true"></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><h3>Problems with <code>/dev</code></h3>
-
-<ol>
-<li>A static /dev is unwiedly big. It would be nice to show only /dev enteries for the devices that we acutally have running in the system.</li>
-<li>We are running out of major and minor number for devices.</li>
-</ol>
+<div class="entry-content"><ul>
+<li>Install KVM and it&rsquo;s dependencies.</li>
+<li>Create a Ubuntu VM using VMBuilder</li>
+</ul>
 
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -88,51 +96,58 @@
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>  <span class="o">[</span>vagrant@vagrant-centos64 ~<span class="o">]</span><span class="nv">$ </span>ls -l /dev/sda
-</span><span class='line'>  brw-rw---- <span class="m">1</span> root disk 8, <span class="m">0</span> Aug <span class="m">14</span> 05:36 /dev/sda
-</span><span class='line'>
-</span><span class='line'>  <span class="c"># shows permissions (brw-rw---- ), owner (root), group (disk), major device number (8), </span>
-</span><span class='line'>    minor device number <span class="o">(</span>0<span class="o">)</span>, date <span class="o">(</span>Aug 14<span class="o">)</span>, hour <span class="o">(</span>05:36<span class="o">)</span> and device name
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo vmbuilder kvm ubuntu     <span class="se">\</span>
+</span><span class='line'>    --arch i386               <span class="se">\</span>
+</span><span class='line'>    --user ankit              <span class="se">\</span>
+</span><span class='line'>    --name ankit              <span class="se">\</span>
+</span><span class='line'>    --pass cracker            <span class="se">\</span>
+</span><span class='line'>    --suite lucid             <span class="se">\</span>
+</span><span class='line'>    --flavour virtual         <span class="se">\</span>
+</span><span class='line'>    --addpkg openssh-server   <span class="se">\</span>
+</span><span class='line'>    --libvirt qemu:///system
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>  When accessing a device file, the major device number selects which device driver is being called to perform read/write. Minor number is passed as a parameter and its usage/interpretations depends on the driver.<br/></p>
-
-<ol>
-<li>Users want a way to name devices in persistant fashion.</li>
-<li>Userspace programs wants to know what devices are created or removed and what /dev entry is associated with them.</li>
-</ol>
+<ul>
+<li><strong>Basic Commands</strong></li>
+</ul>
 
 
-<h3><code>udev</code></h3>
-
-<p>Presentation on udev: <a href="http://www.kroah.com/linux/talks/ols_2003_udev_talk/mgp00001.html">http://www.kroah.com/linux/talks/ols_2003_udev_talk/mgp00001.html</a></p>
-
-<ol>
-<li>the /dev tree is populated only for devices that are currently present in the system.</li>
-<li>udev doesn&rsquo;t care about major or minor number schemes.</li>
-<li>It provides ability to name devices persistently.</li>
-<li>udev emites D-BUS messages so that any userspace program can listen to what devices are created or removed. Userspace programs can also query the database to see what devices are present and what they are currently named.</li>
-</ol>
-
-
-<h3>Dynamic <code>/dev</code></h3>
-
-<p>The content of /dev directory are stored on a temporary file system and all files are render at every system startup. Static files that should always be present in /dev directory can be placed in /lib/udev/devices directory. All the contents of /lib/udev/devices directory are copied to /dev at startup.</p>
-
-<blockquote><p>how does kernel knows which device driver to choose without major or minor device number.</p></blockquote>
-
-<p>The kernel bus drivers probe for devices. For every detected devices kernel creates an internal device structure and sends a uevent to udev deamon. Each devices identifies itself by specially-formatted ID, which tells what kind of device it is. It usually consists of vendor ID, product ID and other subsystem specific values.</p>
-
-<p><code>/etc/udev/rules.d/*.rules</code> contains rules for different devices and <code>udev</code> deamon parses and loads all of them at the startup.</p>
-
-<p>More Info at:
-<a href="http://doc.opensuse.org/products/draft/SLES/SLES-admin_sd_draft/cha.udev.html#sec.udev.devdir">http://doc.opensuse.org/products/draft/SLES/SLES-admin_sd_draft/cha.udev.html#sec.udev.devdir</a></p>
-
-<hr/>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>  arp -n <span class="c"># to find out what ip address was assined to the VM.</span>
+</span><span class='line'>
+</span><span class='line'>  virsh --connect qemu:///system list --all <span class="c"># to list all the vms</span>
+</span><span class='line'>
+</span><span class='line'>  virsh --connect qemu:///system start ubuntu <span class="c"># to start the vm with name ubuntu</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
+<ul>
+<li>For clean shutdown install <strong>acpid</strong> inside the guest OS. <code>sudo apt-get install acpid</code>.</li>
+</ul>
 
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>virsh --connect qemu:///system shutdown ubuntu <span class="c"># to shutdown the vm</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Run the Virtual Machine using KVM</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>kvm -drive <span class="nv">file</span><span class="o">=</span>tmpYPpuMh.qcow2 --snapshot
+</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>Figure out networking aspect while running using kvm</p></blockquote>
 </div>
 
 
@@ -155,21 +170,15 @@
   
 
 
-<time datetime="2014-09-04T02:13:15-05:00" pubdate data-updated="true"></time>
+<time datetime="2014-09-04T15:57:47-05:00" pubdate data-updated="true"></time>
       
-
-<span class="categories">
-  
-    <a class='category' href='/notes-blog/blog/categories/filesystem/'>filesystem</a>, <a class='category' href='/notes-blog/blog/categories/unix/'>unix</a>
-  
-</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://goyalankit.github.io/notes-blog/blog/2014/09/04/slash-udev-notes/" data-via="_goyalankit" data-counturl="http://goyalankit.github.io/notes-blog/blog/2014/09/04/slash-udev-notes/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://goyalankit.github.io/notes-blog/blog/2014/09/04/kernel-compilation-notes/" data-via="_goyalankit" data-counturl="http://goyalankit.github.io/notes-blog/blog/2014/09/04/kernel-compilation-notes/" >Tweet</a>
   
   
   
@@ -178,10 +187,10 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/notes-blog/blog/2014/09/03/the-unix-time-sharing-system-notes/" title="Previous Post: The Unix Time-Sharing System Notes">&laquo; The Unix Time-Sharing System Notes</a>
+        <a class="basic-alignment left" href="/notes-blog/blog/2014/09/04/slash-udev-notes/" title="Previous Post: /udev notes">&laquo; /udev notes</a>
       
       
-        <a class="basic-alignment right" href="/notes-blog/blog/2014/09/04/kernel-compilation-notes/" title="Next Post: kernel compilation notes">kernel compilation notes &raquo;</a>
+        <a class="basic-alignment right" href="/notes-blog/blog/2014/09/04/basic-os-concepts/" title="Next Post: basic os concepts">basic os concepts &raquo;</a>
       
     </p>
   </footer>
@@ -276,8 +285,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://goyalankit.github.io/notes-blog/blog/2014/09/04/slash-udev-notes/';
-        var disqus_url = 'http://goyalankit.github.io/notes-blog/blog/2014/09/04/slash-udev-notes/';
+        var disqus_identifier = 'http://goyalankit.github.io/notes-blog/blog/2014/09/04/kernel-compilation-notes/';
+        var disqus_url = 'http://goyalankit.github.io/notes-blog/blog/2014/09/04/kernel-compilation-notes/';
         var disqus_script = 'embed.js';
       
     (function () {

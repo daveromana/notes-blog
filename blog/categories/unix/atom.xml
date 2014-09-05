@@ -4,7 +4,7 @@
   <title><![CDATA[Category: unix | learn]]></title>
   <link href="http://goyalankit.github.io/notes-blog/blog/categories/unix/atom.xml" rel="self"/>
   <link href="http://goyalankit.github.io/notes-blog/"/>
-  <updated>2014-09-04T11:15:46-05:00</updated>
+  <updated>2014-09-05T03:13:25-05:00</updated>
   <id>http://goyalankit.github.io/notes-blog/</id>
   <author>
     <name><![CDATA[Ankit]]></name>
@@ -218,6 +218,25 @@ i-list (system table)
 <p><a href="../../../../2014/09/04/slash-udev-notes">More on /udev</a></p>
 
 <p><img class="<a" src="href="http://i.imgur.com/aC3F5Bo.png">http://i.imgur.com/aC3F5Bo.png</a>&#8221;></p>
+
+<h3>Class Notes:</h3>
+
+<p>To make a system call: <code>int 0x80</code> -> was expensive.</p>
+
+<p>OSX is essentially a POSIX-compatible.</p>
+
+<p>Soft Link is a file (directory) whose contents are the file name pointing to actual file.</p>
+
+<p>In memory data structure for open files.</p>
+
+<p>File system is a DAG (Directed Acyclic Graph)</p>
+
+<p>File doesn&rsquo;t have a self link, whereas directory does.</p>
+
+<p>Circular structures cannot be garbage collected based on reference count.</p>
+
+<p><img class="left <a" src="href="http://i.imgur.com/C9dGPuy.png">http://i.imgur.com/C9dGPuy.png</a>&#8221; width=&#8221;420&#8221;>
+<img class="<a" src="href="http://i.imgur.com/wob4kNr.png">http://i.imgur.com/wob4kNr.png</a>&#8221; width=&#8221;420&#8221;></p>
 ]]></content>
   </entry>
   
