@@ -3,7 +3,7 @@ layout: post
 title: "The Unix Time-Sharing System Notes"
 date: 2014-09-03 00:19:07 -0500
 comments: true
-categories: unix
+categories: unix filesystem
 ---
 
 **source**: http://cm.bell-labs.com/cm/cs/who/dmr/cacm.html<br/>
@@ -69,3 +69,74 @@ i-list (system table)
 ...
 4 - i-node4
 ```
+
+#### i-node
+
+Content of i-node:
+
+1. Its owner
+2. Its protection bits
+3. The physical disk or tape address for the file contents.
+4. Its size
+5. Time of last modification
+6. The number of links to the file, that is, the number of times it appears in a directory.
+7. A bit indicating whether the file is a directory
+8. A bit indicating whether the file is a special file
+9. A bit indicating whether the file is "large" or "small"
+
+The purpose of open/create call is to turn the pathname to i-number by searching the directories. Once a file is open, its device, i-number, and read/write pointer are stored in a system table indexed by the file descriptor return by open or create.
+
+There is a space in i-node for 13 device addresses.
+
+For special files 12 of the 13 devices addresses are ignored and the first specifies an internal device name, which is interpreted as a pair of numbers representing, resp, a device type and subdevice number. Device type -> system routine to deal with I/O on that device and SubDevice number -> selects a disk drive attached to a particular controller.
+
+`mount` system call maintains a system table whose arguments(keys) are (i-number, device name of the ordinary file specied in mount command) and value is device name of the indicated special file. This table is searched for i-number/device pair during an open/create. If the match is found the i-number is replaced by the root directory and the device name is replaced by table value.
+
+### Processes and Images
+
+An **image** is a computer execution environment. It includes a memory image, general register value, status of open files and the like.
+
+A **process** is execution of image.
+
+`fork`: to create a new process. The new processes after fork has copies of same image and share all open files.
+
+### Implementation of Shell
+
+Shell most of the time waits for user to type command. At newline character shell's read calls returnds and shell analyzes the command line, putting the arg in form of *execute* and then the fork is called. The child process executes the command and parent process waits for the child process to finish. When child process finishes parent shell returns prompt back to the user.
+
+Whenever '&' is used, shell simply doesn't wait for the child process to finish before giving the prompt to user.
+
+### Initializations
+
+The last in the initialization of unix is the creation of a single process and the invocation (via execute) of a program called **init**.
+
+<hr/>
+
+Paper further discusses about pipes, shell, filter, command seperators, implementation of shell using fork.
+
+
+## Further Reading
+
+[More on /udev](../../../../2014/09/04/slash-udev-notes)
+
+{% img http://i.imgur.com/aC3F5Bo.png %}
+
+
+### Class Notes:
+
+To make a system call: `int 0x80` -> was expensive.
+
+OSX is essentially a POSIX-compatible.
+
+Soft Link is a file (directory) whose contents are the file name pointing to actual file.
+
+In memory data structure for open files.
+
+File system is a DAG (Directed Acyclic Graph)
+
+File doesn't have a self link, whereas directory does.
+
+Circular structures cannot be garbage collected based on reference count.
+
+{% img left http://i.imgur.com/C9dGPuy.png 420 %}
+{% img http://i.imgur.com/wob4kNr.png 420 %}

@@ -2,6 +2,7 @@
 layout: post
 title: "python notes"
 date: 2014-09-03 12:14:40 -0500
+published: false
 comments: true
 categories: 
 ---
