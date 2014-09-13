@@ -4,7 +4,7 @@ title: "python notes"
 date: 2014-09-03 12:14:40 -0500
 published: false
 comments: true
-categories: 
+categories: python
 ---
 
 
@@ -30,7 +30,7 @@ c = 12312313
 a is c #False
 
 a = 12
-c = 21
+c = 12
 
 a is c #True
 ```

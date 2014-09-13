@@ -78,4 +78,15 @@ When all the process in a multiprogrammed CPU are not able reside in memory at t
 
 ### Inverted Page Table
 
+{% img http://i.imgur.com/ItoPoXI.jpg?1 500 %}
 
+Linear Inverted Tables: Rather than mapping virtual addresses to physical addresses, we map physical address to virtual addresses.
+http://www.cs.berkeley.edu/~kamil/teaching/sp04/040104.pdf
+
+### File Systems
+
+> Give at least three strategies that a file system can employ to reduce the time a program spends waiting for data reads to complete.
+
+* Prefetching (Spatial Locality) - A process doing random access will not get the benifits.
+* Indexing (Index Most Used Paths) - Accessing files that are not used commonly will be effected.
+* Caching - If the data is being changed rapidly, cache will become stale soon and benifits will diminish.

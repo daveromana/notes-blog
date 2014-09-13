@@ -140,3 +140,11 @@ Circular structures cannot be garbage collected based on reference count.
 
 {% img left http://i.imgur.com/C9dGPuy.png 420 %}
 {% img http://i.imgur.com/wob4kNr.png 420 %}
+
+### mkfs
+
+From man page:
+
+> mkfs is used to build a linux filesystem on a device, usually a hard disk partition. mkfs is usually a front-end for various filesystem builders (mkfs.fstype).
+
+The filesystem specific commands may be invoked directly. The convention is to name the commands as `mkfs.<fs-type>`
