@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Precise Miss Analysis for Program Transformation with Caches of Arbitrary Associativity"
-date: 2014-09-13 14:01:54 -0500
+date: 2014-09-12 12:01:54 -0500
 comments: true
 categories: 
 ---
