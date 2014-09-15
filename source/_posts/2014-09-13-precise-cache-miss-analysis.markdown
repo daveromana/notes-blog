@@ -58,3 +58,14 @@ In case of k-way set associative cache, a miss occurs if between consecutive acc
 3. Solve CME equations for each reuse vector and the solution at a point could belong to cold miss or conflict miss.
 4. If the solution satisfies cold miss equations, mark them as "intermediate points" otherwise it is a conflict miss.
 
+**Set-Associative Cache**
+
+Each CME soluction can be summarized using a triple (i,j,n). n denotes the cache "wrap-arounds", and same value of n indicates the conflict for same memory line.
+
+For k-way associative cache, maintain a set of disctinct conflict points with same n and if the set size exceeds k, we have a conflict.
+
+### Solutions to CMEs
+
+#### Padding
+
+Find constraints on CMEs using cache base address, dimensions size so that no solution exists for CME. Decide padding based on those constraints.
