@@ -1,3 +1,4 @@
+
 ---
 layout: post
 title: "Exokernel: an OS architecture for application-level resource management - Notes"
@@ -42,3 +43,58 @@ Exokernel rather than emulating hardware (virtual machines, high overhead), *exp
 ### Exokernel Design
 
 > The challenge of exokernel is to provide maximum freedom to applications in managing physical resource while protecting them form each other. Exokernel separates protection from management through low level interface
+
+
+
+### Exokernel Notes
+
+Deadlock conditions:
+* mutual exclusion
+* non-preemptive
+* ---
+* ---
+
+Thrashing vs Livelock
+
+End-to-end argument: putting reliability in your system, when you have end-to-end reliability checking can only be viewed as optimization.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
