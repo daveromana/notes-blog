@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: "Exokernel: an OS architecture for application-level resource management - Notes"

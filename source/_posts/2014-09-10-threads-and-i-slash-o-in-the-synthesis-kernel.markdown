@@ -77,7 +77,7 @@ Starts the execution of existing quajects by installing (load procedures and dat
 Three methods to reduce Synchronization:
 
 1. Code Isolation (synchronization avoidance) -> kernel synthesis to separate independent modification of DS. e.g., Thread Table Entry (lock global table -> change local tables)
-2. Procedure Chaining ( "" ) -> serializes the execution of conflicting threads. Single during interrupt handling could be dangerous, so chain the prodedure invoked by signal to the end of interrupt handler (replace the return address - effecient.)
+2. Procedure Chaining ( "" ) -> serializes the execution of conflicting threads. Signal during interrupt handling could be dangerous, so chain the prodedure invoked by signal to the end of interrupt handler (replace the return address - effecient.)
 3. Optimistic Synchronization - update without synchronization, test at the end - if something bad happened -> rollback and retry.
 
 

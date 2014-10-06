@@ -90,3 +90,6 @@ http://www.cs.berkeley.edu/~kamil/teaching/sp04/040104.pdf
 * Prefetching (Spatial Locality) - A process doing random access will not get the benifits.
 * Indexing (Index Most Used Paths) - Accessing files that are not used commonly will be effected.
 * Caching - If the data is being changed rapidly, cache will become stale soon and benifits will diminish.
+
+
+http://duartes.org/gustavo/blog/post/anatomy-of-a-program-in-memory/
