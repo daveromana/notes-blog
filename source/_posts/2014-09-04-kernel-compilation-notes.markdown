@@ -214,8 +214,6 @@ int main()
 * swapper is an idle process with id = 0. It runs when no other process is runnnin.
 
 
-
-
 ### Errors
 
 Ignore these errors. These errors occurs irrespective of how you launch the kernel.
@@ -233,4 +231,5 @@ init: plymouth-log main process (323) terminated with status 1
 
 useful links:
 http://www.linuxchix.org/content/courses/kernel_hacking/lesson8
+
 
