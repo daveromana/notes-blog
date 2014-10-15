@@ -3,7 +3,29 @@ layout: post
 title: "Google File System"
 date: 2014-10-09 12:37:40 -0500
 comments: true
-categories:
+categories: filesystem GFS OS
+---
+
+Source: http://static.googleusercontent.com/media/research.google.com/en/us/archive/gfs-sosp2003.pdf <br/>
+Published: 2003
+
+---
+
+Design Constraints
+---
+
+1. Component failures are the norm rather than exception. FS consists of thousands if commodity parts and is accessed by comparable number of clients.
+2. Files are huge by traditional standards. Multi-GB files are common. Billions of approximately KB-sized files.
+3. Most files are mutated by appending new data rather than overwriting existing data.
+4. Co-designing the applications and the file system API benifits the overall system by increasing flexibility.
+
+Architecture
+---
+
+GFS consists of a **single master** and multiple **chunkservers** and is accessed by multiple clients.
+
+
+Class Notes:
 ---
 
 Problem in datacenters: failures.
@@ -45,4 +67,3 @@ Master doesn't know about the namespaces either, it is also stored on chunkserve
 - absolute paths
 - no datastructure representing directories like inodes
 - no datastructure to enumerate contents of one directory
-- 
