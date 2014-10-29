@@ -16,4 +16,5 @@ The Basic idea is that each proposal has a unique number.
 
 <!-- more -->
 
+### State Machine Replication
 
