@@ -29,5 +29,44 @@ Serializability: One approach to isolation - not dominant. Linearizability is do
 
 Transactions: 2-phase commit, 2-phase locking.
 
+Serializability allows you to opearte on multiple objects.
+
+Serializability and Sequential consistency might not correspond to real time order.
+database - serializability. memory system: read/write.
+
+composable: consisten with real time and doesn't touch multiple objects.
+
+
+Single write gets broken into multiple writes inside kernel. Single write is not serializable
+
+http://www.cs.rochester.edu/courses/254/fall2013/notes/12-concurrency
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
