@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: paxos | learn]]></title>
+  <link href="http://goyalankit.github.io/notes-blog/blog/categories/paxos/atom.xml" rel="self"/>
+  <link href="http://goyalankit.github.io/notes-blog/"/>
+  <updated>2015-01-01T02:19:53+05:30</updated>
+  <id>http://goyalankit.github.io/notes-blog/</id>
+  <author>
+    <name><![CDATA[Ankit]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Paxos Notes]]></title>
+    <link href="http://goyalankit.github.io/notes-blog/blog/2014/10/30/paxos-notes/"/>
+    <updated>2014-10-30T03:27:37+05:30</updated>
+    <id>http://goyalankit.github.io/notes-blog/blog/2014/10/30/paxos-notes</id>
+    <content type="html"><![CDATA[<p>Source: Paxos Made Practical - David Mazieres</p>
+
+<p><strong>Paxos</strong> is a simple protocol tat a group of machines in a distributed system can use to agree on a value proposed by a member of the group.</p>
+
+<p>If it terminates, the protocol reaches consensus even if the network was inreliable  and mutiple machines simultaneously tried to propose different values.</p>
+
+<p>The Basic idea is that each proposal has a unique number.</p>
+
+<!-- more -->
+
+
+<h3>State Machine Replication</h3>
+]]></content>
+  </entry>
+  
+</feed>

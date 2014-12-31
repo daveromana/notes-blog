@@ -4,7 +4,7 @@
   <title><![CDATA[Category: basics | learn]]></title>
   <link href="http://goyalankit.github.io/notes-blog/blog/categories/basics/atom.xml" rel="self"/>
   <link href="http://goyalankit.github.io/notes-blog/"/>
-  <updated>2014-09-05T03:13:25-05:00</updated>
+  <updated>2015-01-01T02:19:53+05:30</updated>
   <id>http://goyalankit.github.io/notes-blog/</id>
   <author>
     <name><![CDATA[Ankit]]></name>
@@ -14,10 +14,23 @@
 
   
   <entry>
+    <title type="html"><![CDATA[java notes]]></title>
+    <link href="http://goyalankit.github.io/notes-blog/blog/2014/10/13/java-notes/"/>
+    <updated>2014-10-13T23:37:23+05:30</updated>
+    <id>http://goyalankit.github.io/notes-blog/blog/2014/10/13/java-notes</id>
+    <content type="html"><![CDATA[<ul>
+<li>Good time library: JodaTime</li>
+<li>Logging: Log4j</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[basic os concepts]]></title>
-    <link href="http://goyalankit.github.io/notes-blog/blog/2014/09/04/basic-os-concepts/"/>
-    <updated>2014-09-04T21:08:52-05:00</updated>
-    <id>http://goyalankit.github.io/notes-blog/blog/2014/09/04/basic-os-concepts</id>
+    <link href="http://goyalankit.github.io/notes-blog/blog/2014/09/05/basic-os-concepts/"/>
+    <updated>2014-09-05T07:38:52+05:30</updated>
+    <id>http://goyalankit.github.io/notes-blog/blog/2014/09/05/basic-os-concepts</id>
     <content type="html"><![CDATA[<h3>Memory Allocation/Memory Management</h3>
 
 <blockquote><p>Act of managing computer memory. Essential requirement is to provide ways to dynamically allocate memory to programs at their request and free when not needed.</p></blockquote>
@@ -97,6 +110,24 @@ Special instruction is used to interrupt to request services from low level syst
 <p>When all the process in a multiprogrammed CPU are not able reside in memory at the same time, some of the process that are not scheduled currently or are blocked are transferred to secondary memory. This dynamic moving of process between memotu and disk is called swapping.</p>
 
 <h3>Inverted Page Table</h3>
+
+<p><img class="<a" src="href="http://i.imgur.com/ItoPoXI.jpg?1">http://i.imgur.com/ItoPoXI.jpg?1</a>&#8221; width=&#8221;500&#8221;></p>
+
+<p>Linear Inverted Tables: Rather than mapping virtual addresses to physical addresses, we map physical address to virtual addresses.
+<a href="http://www.cs.berkeley.edu/~kamil/teaching/sp04/040104.pdf">http://www.cs.berkeley.edu/~kamil/teaching/sp04/040104.pdf</a></p>
+
+<h3>File Systems</h3>
+
+<blockquote><p>Give at least three strategies that a file system can employ to reduce the time a program spends waiting for data reads to complete.</p></blockquote>
+
+<ul>
+<li>Prefetching (Spatial Locality) - A process doing random access will not get the benifits.</li>
+<li>Indexing (Index Most Used Paths) - Accessing files that are not used commonly will be effected.</li>
+<li>Caching - If the data is being changed rapidly, cache will become stale soon and benifits will diminish.</li>
+</ul>
+
+
+<p><a href="http://duartes.org/gustavo/blog/post/anatomy-of-a-program-in-memory/">http://duartes.org/gustavo/blog/post/anatomy-of-a-program-in-memory/</a></p>
 ]]></content>
   </entry>
   

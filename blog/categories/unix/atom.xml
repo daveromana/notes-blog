@@ -4,7 +4,7 @@
   <title><![CDATA[Category: unix | learn]]></title>
   <link href="http://goyalankit.github.io/notes-blog/blog/categories/unix/atom.xml" rel="self"/>
   <link href="http://goyalankit.github.io/notes-blog/"/>
-  <updated>2014-09-05T03:13:25-05:00</updated>
+  <updated>2015-01-01T02:19:53+05:30</updated>
   <id>http://goyalankit.github.io/notes-blog/</id>
   <author>
     <name><![CDATA[Ankit]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[/udev notes]]></title>
     <link href="http://goyalankit.github.io/notes-blog/blog/2014/09/04/slash-udev-notes/"/>
-    <updated>2014-09-04T02:13:15-05:00</updated>
+    <updated>2014-09-04T12:43:15+05:30</updated>
     <id>http://goyalankit.github.io/notes-blog/blog/2014/09/04/slash-udev-notes</id>
     <content type="html"><![CDATA[<h3>Problems with <code>/dev</code></h3>
 
@@ -76,7 +76,7 @@
   <entry>
     <title type="html"><![CDATA[The Unix Time-Sharing System Notes]]></title>
     <link href="http://goyalankit.github.io/notes-blog/blog/2014/09/03/the-unix-time-sharing-system-notes/"/>
-    <updated>2014-09-03T00:19:07-05:00</updated>
+    <updated>2014-09-03T10:49:07+05:30</updated>
     <id>http://goyalankit.github.io/notes-blog/blog/2014/09/03/the-unix-time-sharing-system-notes</id>
     <content type="html"><![CDATA[<p><strong>source</strong>: <a href="http://cm.bell-labs.com/cm/cs/who/dmr/cacm.html">http://cm.bell-labs.com/cm/cs/who/dmr/cacm.html</a><br/>
 <strong>published</strong>: ACM 1974</p>
@@ -237,6 +237,14 @@ i-list (system table)
 
 <p><img class="left <a" src="href="http://i.imgur.com/C9dGPuy.png">http://i.imgur.com/C9dGPuy.png</a>&#8221; width=&#8221;420&#8221;>
 <img class="<a" src="href="http://i.imgur.com/wob4kNr.png">http://i.imgur.com/wob4kNr.png</a>&#8221; width=&#8221;420&#8221;></p>
+
+<h3>mkfs</h3>
+
+<p>From man page:</p>
+
+<blockquote><p>mkfs is used to build a linux filesystem on a device, usually a hard disk partition. mkfs is usually a front-end for various filesystem builders (mkfs.fstype).</p></blockquote>
+
+<p>The filesystem specific commands may be invoked directly. The convention is to name the commands as <code>mkfs.&lt;fs-type&gt;</code></p>
 ]]></content>
   </entry>
   

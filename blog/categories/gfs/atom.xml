@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: gfs | learn]]></title>
+  <link href="http://goyalankit.github.io/notes-blog/blog/categories/gfs/atom.xml" rel="self"/>
+  <link href="http://goyalankit.github.io/notes-blog/"/>
+  <updated>2015-01-01T02:19:53+05:30</updated>
+  <id>http://goyalankit.github.io/notes-blog/</id>
+  <author>
+    <name><![CDATA[Ankit]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Google File System]]></title>
+    <link href="http://goyalankit.github.io/notes-blog/blog/2014/10/09/google-file-system/"/>
+    <updated>2014-10-09T23:07:40+05:30</updated>
+    <id>http://goyalankit.github.io/notes-blog/blog/2014/10/09/google-file-system</id>
+    <content type="html"><![CDATA[<p>Source: <a href="http://static.googleusercontent.com/media/research.google.com/en/us/archive/gfs-sosp2003.pdf">http://static.googleusercontent.com/media/research.google.com/en/us/archive/gfs-sosp2003.pdf</a> <br/>
+Published: 2003</p>
+
+<hr />
+
+<h2>Design Constraints</h2>
+
+<ol>
+<li>Component failures are the norm rather than exception. FS consists of thousands if commodity parts and is accessed by comparable number of clients.</li>
+<li>Files are huge by traditional standards. Multi-GB files are common. Billions of approximately KB-sized files.</li>
+<li>Most files are mutated by appending new data rather than overwriting existing data.</li>
+<li>Co-designing the applications and the file system API benifits the overall system by increasing flexibility.</li>
+</ol>
+
+
+<h2>Architecture</h2>
+
+<p>GFS consists of a <strong>single master</strong> and multiple <strong>chunkservers</strong> and is accessed by multiple clients.</p>
+
+<h2>Class Notes:</h2>
+
+<p>Problem in datacenters: failures.</p>
+
+<p><strong>Master</strong>: Single point of failure, master has log of operations.</p>
+
+<p>Lease: soft state.</p>
+
+<p>Revoke:</p>
+
+<ol>
+<li>wait</li>
+<li>contact server</li>
+</ol>
+
+
+<hr />
+
+<p>Snapshot:</p>
+
+<ol>
+<li>revoke lease</li>
+<li>copy-on-write</li>
+</ol>
+
+
+<p>snapshot on large files:-> copy on writes.</p>
+
+<p>Contact replicas and tell them to make local copies. Update the metadata to point to the individual chunks.</p>
+
+<ul>
+<li>distributed the consistency to both application libraries.</li>
+<li>unique identifier could be a problem.</li>
+</ul>
+
+
+<p>chunks metadata at master are not persisted.</p>
+
+<p>Appends are ordered:</p>
+
+<p>1) lease and primary
+2) primary serial #&rsquo;s</p>
+
+<p>Master doesn&rsquo;t know about the namespaces either, it is also stored on chunkservers.</p>
+
+<ul>
+<li>No hardlinks/softlinks</li>
+<li>absolute paths</li>
+<li>no datastructure representing directories like inodes</li>
+<li>no datastructure to enumerate contents of one directory</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

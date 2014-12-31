@@ -4,7 +4,7 @@
   <title><![CDATA[Category: pointers | learn]]></title>
   <link href="http://goyalankit.github.io/notes-blog/blog/categories/pointers/atom.xml" rel="self"/>
   <link href="http://goyalankit.github.io/notes-blog/"/>
-  <updated>2014-09-05T03:13:25-05:00</updated>
+  <updated>2015-01-01T02:19:53+05:30</updated>
   <id>http://goyalankit.github.io/notes-blog/</id>
   <author>
     <name><![CDATA[Ankit]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Swap Using Reference]]></title>
-    <link href="http://goyalankit.github.io/notes-blog/blog/2014/08/31/swap-using-reference/"/>
-    <updated>2014-08-31T21:01:18-05:00</updated>
-    <id>http://goyalankit.github.io/notes-blog/blog/2014/08/31/swap-using-reference</id>
+    <link href="http://goyalankit.github.io/notes-blog/blog/2014/09/01/swap-using-reference/"/>
+    <updated>2014-09-01T07:31:18+05:30</updated>
+    <id>http://goyalankit.github.io/notes-blog/blog/2014/09/01/swap-using-reference</id>
     <content type="html"><![CDATA[<p><div class='problem-box'> <b> Problem: </b> Write a method to swap two integers passed by reference. </div></p>
 
 <p><div class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>

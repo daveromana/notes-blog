@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: hpc | learn]]></title>
+  <link href="http://goyalankit.github.io/notes-blog/blog/categories/hpc/atom.xml" rel="self"/>
+  <link href="http://goyalankit.github.io/notes-blog/"/>
+  <updated>2015-01-01T02:19:53+05:30</updated>
+  <id>http://goyalankit.github.io/notes-blog/</id>
+  <author>
+    <name><![CDATA[Ankit]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Papi native hardware counters]]></title>
+    <link href="http://goyalankit.github.io/notes-blog/blog/2014/11/13/papi-native-hardware-counters/"/>
+    <updated>2014-11-13T03:41:50+05:30</updated>
+    <id>http://goyalankit.github.io/notes-blog/blog/2014/11/13/papi-native-hardware-counters</id>
+    <content type="html"><![CDATA[<h3>Check for the available native hardware counters:</h3>
+
+<pre><code>$ papi_native_avail
+</code></pre>
+
+<h3>Sample code to get the values for native hardware counters</h3>
+
+<pre><code class="c">#include &lt;stdio.h&gt;
+#include &lt;papi.h&gt;
+
+#define MAX_COUNTERS 256
+int rozmer = 1;
+
+static char * events[] = {
+    "PERF_COUNT_HW_CACHE_L1D:WRITE",
+    "PERF_COUNT_HW_CACHE_L1D:ACCESS",
+    "PERF_COUNT_HW_CACHE_L1D:READ",
+    "PERF_COUNT_HW_CACHE_L1D:PREFETCH",
+    "PERF_COUNT_HW_CACHE_L1D:MISS",
+    "HW_PRE_REQ:L1D_MISS",
+    //"L1-DCACHE-LOADS"
+};
+
+#define NUMCOUNTERS 6
+void compute() {
+    int EventCode, retval;
+    int EventSet = PAPI_NULL;
+    long long PAPI_Counters[MAX_COUNTERS];
+
+    /* Initialize the library */
+    retval = PAPI_library_init(PAPI_VER_CURRENT);
+
+    if  (retval != PAPI_VER_CURRENT) {
+        fprintf(stderr, "PAPI library init error!\n");
+        exit(1);
+    }
+
+    /* PAPI create event */
+    if (PAPI_create_eventset(&amp;EventSet) != PAPI_OK) {
+        fprintf(stderr, "create event set: %s", PAPI_strerror(retval));
+    }
+
+    /* Add events to Event Set */
+    for (int i = 0; i &lt; NUMCOUNTERS; i++) {
+        if ( (retval = PAPI_add_named_event(EventSet, events[i])) != PAPI_OK) {
+            fprintf(stderr, "add named event: %s", PAPI_strerror(retval));
+        }
+    }
+
+    /* Start the counters */
+    retval = PAPI_start(EventSet);
+
+    float matice1[rozmer][rozmer];
+    float matice2[rozmer][rozmer];
+    float matice3[rozmer][rozmer];
+
+    //Main multiply code
+    int j,k,m;
+    for(j = 0; j &lt; rozmer; j++)
+    {
+        for (k = 0; k &lt; rozmer; k++)
+        {
+            float temp = 0;
+            for (m = 0; m &lt; rozmer; m++)
+            {
+                temp = temp + matice1[j][m] * matice2[m][k];
+            }
+            matice3[j][k] = temp;
+        }
+    }
+
+    /* Stop the counters */
+    retval = PAPI_stop(EventSet, PAPI_Counters);
+
+    if (retval != PAPI_OK) exit(1);
+
+    /* Print the counters */
+    for (int j = 0; j &lt; NUMCOUNTERS; j++) {
+        printf("%20lld %s\n", PAPI_Counters[j], events[j]);
+    }
+}
+
+void main(){
+  compute();
+}
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

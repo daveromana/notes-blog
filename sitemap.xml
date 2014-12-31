@@ -3,65 +3,233 @@
   
   
   <url>
-    <loc>http://goyalankit.github.io/notes-blog/blog/2014/09/04/basic-os-concepts/</loc>
-    <lastmod>2014-09-04T21:08:52-05:00</lastmod>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/11/18/concurrent-objects/</loc>
+    <lastmod>2014-11-18T06:10:16+05:30</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>http://goyalankit.github.io/notes-blog/blog/2014/09/04/kernel-compilation-notes/</loc>
-    <lastmod>2014-09-04T15:57:47-05:00</lastmod>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/11/13/papi-native-hardware-counters/</loc>
+    <lastmod>2014-11-13T03:41:50+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/11/12/fast-paxos/</loc>
+    <lastmod>2014-11-12T02:40:06+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/11/07/ruby-notes/</loc>
+    <lastmod>2014-11-07T09:20:50+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/11/07/spanner-googles-globally-distributed-database/</loc>
+    <lastmod>2014-11-07T06:17:50+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/11/07/map-reduce/</loc>
+    <lastmod>2014-11-07T00:01:15+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/10/30/paxos-notes/</loc>
+    <lastmod>2014-10-30T03:27:37+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/10/27/make-notes/</loc>
+    <lastmod>2014-10-27T23:14:03+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/10/23/concurrency/</loc>
+    <lastmod>2014-10-23T23:08:21+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/10/18/static-and-dynamic-linking/</loc>
+    <lastmod>2014-10-18T05:55:26+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/10/16/process-address-space/</loc>
+    <lastmod>2014-10-16T05:10:53+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/10/15/program-loading-and-memory-mapping/</loc>
+    <lastmod>2014-10-15T02:10:27+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/10/13/java-notes/</loc>
+    <lastmod>2014-10-13T23:37:23+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/10/10/device-drivers/</loc>
+    <lastmod>2014-10-10T03:04:14+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/10/09/google-file-system/</loc>
+    <lastmod>2014-10-09T23:07:40+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/10/03/memory-resource-management-in-vmware-esx-server/</loc>
+    <lastmod>2014-10-03T09:05:46+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/09/27/writing-my-own-networked-file-system/</loc>
+    <lastmod>2014-09-27T02:18:45+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/09/26/log-structured-file-system/</loc>
+    <lastmod>2014-09-26T01:07:15+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/09/23/xen-the-art-of-virtualization/</loc>
+    <lastmod>2014-09-23T23:33:46+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/09/21/scheduling-basics/</loc>
+    <lastmod>2014-09-21T03:19:25+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/09/16/practical-cgroups/</loc>
+    <lastmod>2014-09-16T07:13:56+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/09/16/cgroup-basics/</loc>
+    <lastmod>2014-09-16T05:38:43+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/09/12/precise-cache-miss-analysis/</loc>
+    <lastmod>2014-09-12T22:31:54+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/09/12/cache-basics/</loc>
+    <lastmod>2014-09-12T22:10:19+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/09/11/threads-and-i-slash-o-in-the-synthesis-kernel/</loc>
+    <lastmod>2014-09-11T08:52:42+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/09/10/file-system-continued/</loc>
+    <lastmod>2014-09-10T02:26:30+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/09/10/verification-by-model-checking/</loc>
+    <lastmod>2014-09-10T01:58:31+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/09/08/exokernel-notes/</loc>
+    <lastmod>2014-09-08T02:04:49+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/09/05/basic-os-concepts/</loc>
+    <lastmod>2014-09-05T07:38:52+05:30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/09/05/kernel-compilation-notes/</loc>
+    <lastmod>2014-09-05T02:27:47+05:30</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
     <loc>http://goyalankit.github.io/notes-blog/blog/2014/09/04/slash-udev-notes/</loc>
-    <lastmod>2014-09-04T02:13:15-05:00</lastmod>
+    <lastmod>2014-09-04T12:43:15+05:30</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
     <loc>http://goyalankit.github.io/notes-blog/blog/2014/09/03/the-unix-time-sharing-system-notes/</loc>
-    <lastmod>2014-09-03T00:19:07-05:00</lastmod>
+    <lastmod>2014-09-03T10:49:07+05:30</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>http://goyalankit.github.io/notes-blog/blog/2014/08/31/unique-abbreviation-for-a-list-of-words/</loc>
-    <lastmod>2014-08-31T21:11:51-05:00</lastmod>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/09/01/unique-abbreviation-for-a-list-of-words/</loc>
+    <lastmod>2014-09-01T07:41:51+05:30</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>http://goyalankit.github.io/notes-blog/blog/2014/08/31/swap-using-reference/</loc>
-    <lastmod>2014-08-31T21:01:18-05:00</lastmod>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/09/01/swap-using-reference/</loc>
+    <lastmod>2014-09-01T07:31:18+05:30</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>http://goyalankit.github.io/notes-blog/blog/2014/08/31/hola-mundo/</loc>
-    <lastmod>2014-08-31T20:29:11-05:00</lastmod>
+    <loc>http://goyalankit.github.io/notes-blog/blog/2014/09/01/hola-mundo/</loc>
+    <lastmod>2014-09-01T06:59:11+05:30</lastmod>
     <priority>0.8</priority>
   </url>
   
   
   <url>
     <loc>http://goyalankit.github.io/notes-blog/blog/archives/</loc>
-    <lastmod>2014-09-05T03:13:25-05:00</lastmod>
+    <lastmod>2015-01-01T02:19:53+05:30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://goyalankit.github.io/notes-blog/</loc>
-    <lastmod>2014-09-05T03:13:25-05:00</lastmod>
+    <lastmod>2015-01-01T02:19:53+05:30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <url>
     <loc>http://goyalankit.github.io/notes-blog/about/</loc>
-    <lastmod>2014-09-05T03:13:25-05:00</lastmod>
+    <lastmod>2015-01-01T02:19:53+05:30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

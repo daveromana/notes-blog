@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: verification | learn]]></title>
+  <link href="http://goyalankit.github.io/notes-blog/blog/categories/verification/atom.xml" rel="self"/>
+  <link href="http://goyalankit.github.io/notes-blog/"/>
+  <updated>2015-01-01T02:19:53+05:30</updated>
+  <id>http://goyalankit.github.io/notes-blog/</id>
+  <author>
+    <name><![CDATA[Ankit]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[verification by model checking]]></title>
+    <link href="http://goyalankit.github.io/notes-blog/blog/2014/09/10/verification-by-model-checking/"/>
+    <updated>2014-09-10T01:58:31+05:30</updated>
+    <id>http://goyalankit.github.io/notes-blog/blog/2014/09/10/verification-by-model-checking</id>
+    <content type="html"><![CDATA[<p>Formal verification techniques can be thought of comprising of three parts:</p>
+
+<ol>
+<li>a <strong>framework for modelling systems</strong>, typically a description language.</li>
+<li>a <strong>specific language</strong> for describing the properties of the world.</li>
+<li>a <strong>verification method</strong> to establish whether the description of the system satisfies the specification.</li>
+</ol>
+
+
+<p>Approaches to method verification:</p>
+
+<ol>
+<li>Proof Based: Here the system description is a set of formulas <em>Γ</em> and specific language is another formula φ. The verification method consists of trying to find a proof that <em>Γ</em> |− φ.</li>
+<li>Model Based: the system is represented by model M, specification is again by a formula φ and the verification method consists of computing whether a model M satisfies φ.</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: distributed-database | learn]]></title>
+  <link href="http://goyalankit.github.io/notes-blog/blog/categories/distributed-database/atom.xml" rel="self"/>
+  <link href="http://goyalankit.github.io/notes-blog/"/>
+  <updated>2015-01-01T02:19:53+05:30</updated>
+  <id>http://goyalankit.github.io/notes-blog/</id>
+  <author>
+    <name><![CDATA[Ankit]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Spanner: Google's Globally Distributed Database]]></title>
+    <link href="http://goyalankit.github.io/notes-blog/blog/2014/11/07/spanner-googles-globally-distributed-database/"/>
+    <updated>2014-11-07T06:17:50+05:30</updated>
+    <id>http://goyalankit.github.io/notes-blog/blog/2014/11/07/spanner-googles-globally-distributed-database</id>
+    <content type="html"><![CDATA[<p><strong>Spanner</strong>: Database that shards data across many set of Paxos state machines in data centers spread accross the world.</p>
+
+<h3>Time API</h3>
+
+<p>Sawtooth peak when executing, comes back when synced from server.</p>
+
+<p>Smax: largest timestamp till relpica is up to date.</p>
+
+<h3>Leases</h3>
+
+<p>leaders participate in local and distributed transactions. So it&rsquo;s better to have leaders for long time. Auto released after expiration.</p>
+
+<p>extend the lease:
+- leader can ssign timestamp to lease in future.
+- leader can try to extend it&rsquo;s lease to make sure it&rsquo;s present when transaction happens.</p>
+
+<h3>Snapshot isolation: all reads satisfied from the image.</h3>
+
+<ul>
+<li>not as strong as strict serializability.</li>
+<li>supported using Tsafe -> time when you don&rsquo;t have prepare transactions.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

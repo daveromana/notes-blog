@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: xen | learn]]></title>
+  <link href="http://goyalankit.github.io/notes-blog/blog/categories/xen/atom.xml" rel="self"/>
+  <link href="http://goyalankit.github.io/notes-blog/"/>
+  <updated>2015-01-01T02:19:53+05:30</updated>
+  <id>http://goyalankit.github.io/notes-blog/</id>
+  <author>
+    <name><![CDATA[Ankit]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[xen - the art of virtualization]]></title>
+    <link href="http://goyalankit.github.io/notes-blog/blog/2014/09/23/xen-the-art-of-virtualization/"/>
+    <updated>2014-09-23T23:33:46+05:30</updated>
+    <id>http://goyalankit.github.io/notes-blog/blog/2014/09/23/xen-the-art-of-virtualization</id>
+    <content type="html"><![CDATA[<h2>x86 virtualization challenges</h2>
+
+<ul>
+<li>EFLAGS register has interrupt enable flag(IF). If the kernel is being virtualized it doesn&rsquo;t have privilage to enable interrupts. Kernel calls pushf and popf all over the place.</li>
+<li>Register cr3 points to the base of page table. Hardware MMU will read cr3 on page faults if the virtual addressing is enabled. VMM can&rsquo;t trust OS, solved by either shadow page tables (ESX Server) or allowing updates after verification (XEN)</li>
+<li>Untagged TLB means frequent flushes. Addressed with hardware translation.</li>
+</ul>
+
+
+<h3>Consider page fault</h3>
+
+<p>ESX Server</p>
+
+<pre><code class="Ruby">Guest application: refers to unmapped memory address.
+Hardware: TRAP! set privilaged bit. jump to VMM trap handler
+VMM: Figure out which guest OS, clear privilaged bit, check shadow page table (or software TLB cache), if page not resident, set up trap registers for guest OS; jump to that guest OS's trap handler.
+Guest OS: Read cr2 to find the faulting address
+HW: TRAP! You can;t read the cr2; set privileged bit; jump to VMM trap handler.
+VMM: Read the cr2 and put faulting address it into guest OS register; clear privileged bit.
+Guest OS: Allocate physical page and write page table entry from VA -&gt; PA
+HW: TRAP! you can't write(READ-ONLY access) to page table. set privilaged bit; jump to VMM handler
+VMM: Allocate a page of machine memory,record PA-&gt;MA mapping and install it in shadow page table; clear privileged bit; return to guest OS trap handler.
+Guest OS: everything worked fine. `iret` Clear the privileged bit and return to guest handler
+HW: TRAP! (you don't get to clear the priveleged bit); set privileged; jump to VMM handler
+VMM: `iret` to guest application
+</code></pre>
+
+<h3>XEN</h3>
+
+<p><strong>For each privilage level, a separate stack is maintained.</strong></p>
+
+<p>Guest OS runs in Ring 1, Application runs in Ring 4 and VMM runs in Ring 0.</p>
+
+<p>When application is executing it has its own stack in Ring 4, now when we have a page fault, hardware traps and calls the trap handler. Trap handler is directly registered by Guest OS (though validated by XEN). Trap handeling code runs in Ring 1 (guest OS)</p>
+
+<h4>Memory:</h4>
+
+<ul>
+<li>Guest OSes allocates and manage hardware page tables.</li>
+<li>Guest OS allocates and registers with xen giving away its write privileges.</li>
+<li>All updates (using hyper calls) need to be validated by XEN.</li>
+<li>XEN registers page tables directly with MMU.</li>
+<li>To aid validation frames are marked: page directory, page table, local descriptor table, global des. tab., Writable.</li>
+</ul>
+
+
+<h4>CPU:</h4>
+
+<ul>
+<li>basic assumption: os is most privileged., rings help.</li>
+<li><p>Privileged instructions are paravirtualized by requiring them to be validated and executed within xen. Any guest os attempt to execute privileged instruction: failed by processor (silently or trap).</p></li>
+<li><p>Exceptions and trap are virtualized straightforwardly. A table describing the handler for each type is registered with XEN for validation. exception stack frames are unmodified in paravirt.</p></li>
+<li>Excepions can be directly handled by hardware, but page faults need to go through XEN.</li>
+<li>Page fault handler would read cr2(not possible), copy it to the extended stack frame.</li>
+<li>On page fault, xen copies stack frame to guest os and return control to registered handler.Trap handlers (guest OS) are in Ring 1. CR2 is in ring 0. M2P</li>
+</ul>
+
+
+<h4>Device I/O</h4>
+
+<ul>
+<li>clean and simple abstractions.</li>
+<li>interrupts -> lightweight event delivery mechanism.</li>
+</ul>
+
+
+<h4>Control and Management:</h4>
+
+<ul>
+<li>Hypervisor will be involved in scheduling but there is no need to be involved in high level details such as how to share the CPU among domains. or what kind of packets a domain can transfer.</li>
+<li>Hypervisor provides control operations through an interace accessible from authorized domains.</li>
+<li>Domain 0 is created at boot time and has access to control interface and is responsible for application level management software.</li>
+<li>Control interface provides the ability to create/destrot domains, their scheduling parameters, physical memory allocations and access they are given to physical resources like physical disk and network devices.
+*</li>
+</ul>
+
+
+<h3>Class Notes:</h3>
+
+<p>Domain 0 - is a VM. Device drivers are put inside domain 0.</p>
+
+<p>write a block of data ==> goes to VMM ==> goes to VM (converting it to actual blocks).</p>
+
+<hr />
+
+<p>Not XEN RELATED
+Hardware virtualization
+system calls and page faults don&rsquo;t trap.</p>
+
+<p>VA - PT - PA</p>
+
+<p>VMWare
+VA - Shadow PT - MA
+PA - PMAP - MA</p>
+
+<p>Shadow tables - per guest application. Since it maps from VA.
+PMAP is per guest OS</p>
+
+<p>Extended page table - per VM or per guest.</p>
+
+<p>A VM has well defined PA space</p>
+
+<p>Two ways of VMM</p>
+
+<p>Build it into operating system.
+OS like explicitly running.</p>
+
+<p>ESX server(special purpose VMM) vs ESX workstation (general purpose os)</p>
+
+<p>Double Paging - two different pieces of software working on it.</p>
+
+<p>Force guest OS to use it&rsquo;s own paging algorithm</p>
+
+<h4>information on exceptions and interrupt handlers</h4>
+
+<p><a href="http://cse.unl.edu/~goddard/Courses/CSCE351/IntelArchitecture/IntelInterupts.pdf">http://cse.unl.edu/~goddard/Courses/CSCE351/IntelArchitecture/IntelInterupts.pdf</a></p>
+]]></content>
+  </entry>
+  
+</feed>

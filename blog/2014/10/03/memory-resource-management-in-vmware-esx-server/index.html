@@ -1,0 +1,351 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Memory Resource Management in VMWare ESX Server - learn</title>
+  <meta name="author" content="Ankit">
+
+  
+  <meta name="description" content="Source: https://www.usenix.org/legacy/event/osdi02/tech/waldspurger/waldspurger.pdf
+Published: 2002 VMWare ESX Server is a thin layer designed to &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://goyalankit.github.io/notes-blog/blog/2014/10/03/memory-resource-management-in-vmware-esx-server/">
+  <link href="/notes-blog/favicon.png" rel="icon">
+  <link href="/notes-blog/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+   <link href="/notes-blog/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <script src="/notes-blog/javascripts/modernizr-2.0.js"></script>
+  <script src="/notes-blog/javascripts/ender.js"></script>
+  <script src="/notes-blog/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="atom.xml" rel="alternate" title="learn" type="application/atom+xml">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900' rel='stylesheet' type='text/css'>
+
+
+
+
+  
+
+  </head>
+
+<body   >
+  <header role="banner"><hgroup>
+</hgroup>
+
+</header>
+   <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:goyalankit.github.io/notes-blog" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/notes-blog/">Blog</a></li>
+  <li><a href="/notes-blog/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Memory Resource Management in VMWare ESX Server</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-03T09:05:46+05:30" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Source: <a href="https://www.usenix.org/legacy/event/osdi02/tech/waldspurger/waldspurger.pdf">https://www.usenix.org/legacy/event/osdi02/tech/waldspurger/waldspurger.pdf</a><br/>
+Published: 2002</p>
+
+<p>VMWare ESX Server is a thin layer designed to multiplex hardware resources efficiently among virtual machines running unmodified commodity operating systems.</p>
+
+<h3>Memory Virtualization</h3>
+
+<p>All guest operating systems expect a zero-phased physical address space as provided by real hardwares. ESX Server gives this illusion by adding an extra level of translation. In this mechanism, Virtual addresses are mapped to &ldquo;Physical Address&rdquo; (provided by ESX Server) which are further mapped to Machine addresses (actual memory on chip). Seperate shadow pages tables, which contains virtual to machine page mappings for use by the processor.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> -----------------      PMAP in ESX    ------------------     Page Table in OS   -----------------
+</span><span class='line'>| Machine Address |   &lt;-------------  | Physical Address |  &lt;-----------------  | Virtual Address |
+</span><span class='line'> -----------------                     ------------------                        -----------------</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Reclamation Mechanisms</h4>
+
+<p>ESX Server usually overcommits memory and needs a reclamation mechanism to reclaim memory from one or more virtual machines.</p>
+
+<h4>Balooning</h4>
+
+<p>A small balloon module is loaded into the guest OS as a pseudo-device driver or kernel service. It doesn&rsquo;t have any external interface. When ESX server wants to reclaim memory, it instructs the driver to &lsquo;inflate&rsquo; by allocating pinned physical pages within the VM. This creates a memory pressure inside the VM and guest OS starts reclaiming memory to satisfy drivers request. The balloon driver communicates the physical page number to ESX server, which may then recalim the corressponding machine page.</p>
+
+<ul>
+<li>Technically guest os shouldn&rsquo;t touch pages allocated to balloon driver, however ESX server doesn&rsquo;t rely on guest os correctness. It annotates its pmap entry and deallocates its associated MPN (machine page number). any subsequent attempt to access that memory will generate a page fault that is handled by the server.</li>
+</ul>
+
+
+<h4>Demand Paging</h4>
+
+<p>ESX server preferentially uses ballooning to reclaim memory, treating as a common-case optimization if ballooning is not possible or insufficient, memory is reclaimed by paging out to an ESX Server swap area on disk, without any guest involvement.</p>
+
+<p>A randomized page replacement policy is used so that higher level page semantics are not effected.</p>
+
+<h4>Sharing Memory - Content-Based page sharing</h4>
+
+<p>ESX server maintains a hashmap of pages where key is hash summarizing the content in page. If the hash value for new page matches an existing page, then the whole contents of the page are compared and if they match a reference count is incremented and the page is shared. Any attempt to write to a shared page will generate a fault, transparently creating a new page. (COW - copy on write)</p>
+
+<p>If no match is found the page is hashed but it is not marked as COW. Instead it is tagged as a special hint entry. On any future match, contents of the hint page are rehashed and checked to see if the page has been modified. If the hash is still valid, a full comparison is performed and page is shared (marked as COW now).</p>
+
+<h4>Share based allocation</h4>
+
+<p>Resource rights are encapsulated by shares, which are owned by clients that consume resources. Traditionally VMs that have more shares are allocated more resources nad in case of reclamation, the VMs with lower shares are used to reclaim memory. It may happen that VMs with larger share are not using the memory and smaller VMs are the one that can actually benifit from the memory. So we don&rsquo;t have good resource utilization here.</p>
+
+<p>ESX server introduces the concept of idle memory tax which charges more for the idle pages than the pages that are activally used.</p>
+
+<h4>Measuring Idle memory</h4>
+
+<p>ESX server uses a statistical sampling approach to obtain aggregate VM working set estimates directly, without any guest involvement. At the start of sampling period, a small number of the vm&rsquo;s &ldquo;physical&rdquo; pages are selected and their corresponding TLB enteries and MMUU state is invalidated. When VM access those pages, it leads to a fault and a use of the page is registered. At the end of period fraction f of memory actively accessed by the vm can be calculated by simply f = t/n (t page faults out of n invalidations)</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ankit</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-03T09:05:46+05:30" pubdate data-updated="true"></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://goyalankit.github.io/notes-blog/blog/2014/10/03/memory-resource-management-in-vmware-esx-server/" data-via="_goyalankit" data-counturl="http://goyalankit.github.io/notes-blog/blog/2014/10/03/memory-resource-management-in-vmware-esx-server/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/notes-blog/blog/2014/09/27/writing-my-own-networked-file-system/" title="Previous Post: writing my own networked file system">&laquo; writing my own networked file system</a>
+      
+      
+        <a class="basic-alignment right" href="/notes-blog/blog/2014/10/09/google-file-system/" title="Next Post: Google File System">Google File System &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section id="titles">
+  <a href="http://goyalankit.github.io/notes-blog" title="learn"><img id="logo" src="http://goyalankit.github.io/notes-blog/images/logo.png" /></a>
+  <h1 id="site_title"><a href="http://goyalankit.github.io/notes-blog" title="learn">learn</a></h1>
+  <h3 id="site_subtitle">just code</h3>
+</section>
+
+<section id="menu">
+  <ul>
+    <li><i class="fa fa-home fa-lg"></i><a href="http://goyalankit.github.io/notes-blog"> Home </a></li>
+    <li><i class="fa fa-calendar fa-lg"></i><a href="http://goyalankit.github.io/notes-blog/blog/archives/"> Archives </a></li>
+    <li><i class="fa fa-user fa-lg"></i><a href="http://goyalankit.github.io/notes-blog/about/"> About </a></li>
+    <li><i class="fa fa-rss fa-lg"></i><a href="http://goyalankit.github.io/notes-blog/atom.xml"> Feed </a></li>
+  </ul>
+</section>
+
+<section id="social">
+  
+
+  
+
+  
+
+  
+    <a href="https://github.com/goyalankit" title="goyalankit"><i class="fa fa-github fa-2x"></i></a>
+  
+
+  
+
+  
+    <a href="https://twitter.com/_goyalankit" title="_goyalankit"><i class="fa fa-twitter fa-2x"></i></a>
+  
+</section>
+
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/notes-blog/blog/2014/11/18/concurrent-objects/">Concurrent Objects</a>
+      </li>
+    
+      <li class="post">
+        <a href="/notes-blog/blog/2014/11/13/papi-native-hardware-counters/">Papi native hardware counters</a>
+      </li>
+    
+      <li class="post">
+        <a href="/notes-blog/blog/2014/11/12/fast-paxos/">Fast Paxos</a>
+      </li>
+    
+      <li class="post">
+        <a href="/notes-blog/blog/2014/11/07/ruby-notes/">Ruby Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/notes-blog/blog/2014/11/07/spanner-googles-globally-distributed-database/">Spanner: Google&#8217;s Globally Distributed Database</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/goyalankit">@goyalankit</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'goyalankit',
+            count: 4,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/notes-blog/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Ankit -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'goyalankit';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://goyalankit.github.io/notes-blog/blog/2014/10/03/memory-resource-management-in-vmware-esx-server/';
+        var disqus_url = 'http://goyalankit.github.io/notes-blog/blog/2014/10/03/memory-resource-management-in-vmware-esx-server/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

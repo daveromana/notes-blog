@@ -4,7 +4,7 @@
   <title><![CDATA[Category: filesystem | learn]]></title>
   <link href="http://goyalankit.github.io/notes-blog/blog/categories/filesystem/atom.xml" rel="self"/>
   <link href="http://goyalankit.github.io/notes-blog/"/>
-  <updated>2014-09-05T03:13:25-05:00</updated>
+  <updated>2015-01-01T02:19:53+05:30</updated>
   <id>http://goyalankit.github.io/notes-blog/</id>
   <author>
     <name><![CDATA[Ankit]]></name>
@@ -14,9 +14,146 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Google File System]]></title>
+    <link href="http://goyalankit.github.io/notes-blog/blog/2014/10/09/google-file-system/"/>
+    <updated>2014-10-09T23:07:40+05:30</updated>
+    <id>http://goyalankit.github.io/notes-blog/blog/2014/10/09/google-file-system</id>
+    <content type="html"><![CDATA[<p>Source: <a href="http://static.googleusercontent.com/media/research.google.com/en/us/archive/gfs-sosp2003.pdf">http://static.googleusercontent.com/media/research.google.com/en/us/archive/gfs-sosp2003.pdf</a> <br/>
+Published: 2003</p>
+
+<hr />
+
+<h2>Design Constraints</h2>
+
+<ol>
+<li>Component failures are the norm rather than exception. FS consists of thousands if commodity parts and is accessed by comparable number of clients.</li>
+<li>Files are huge by traditional standards. Multi-GB files are common. Billions of approximately KB-sized files.</li>
+<li>Most files are mutated by appending new data rather than overwriting existing data.</li>
+<li>Co-designing the applications and the file system API benifits the overall system by increasing flexibility.</li>
+</ol>
+
+
+<h2>Architecture</h2>
+
+<p>GFS consists of a <strong>single master</strong> and multiple <strong>chunkservers</strong> and is accessed by multiple clients.</p>
+
+<h2>Class Notes:</h2>
+
+<p>Problem in datacenters: failures.</p>
+
+<p><strong>Master</strong>: Single point of failure, master has log of operations.</p>
+
+<p>Lease: soft state.</p>
+
+<p>Revoke:</p>
+
+<ol>
+<li>wait</li>
+<li>contact server</li>
+</ol>
+
+
+<hr />
+
+<p>Snapshot:</p>
+
+<ol>
+<li>revoke lease</li>
+<li>copy-on-write</li>
+</ol>
+
+
+<p>snapshot on large files:-> copy on writes.</p>
+
+<p>Contact replicas and tell them to make local copies. Update the metadata to point to the individual chunks.</p>
+
+<ul>
+<li>distributed the consistency to both application libraries.</li>
+<li>unique identifier could be a problem.</li>
+</ul>
+
+
+<p>chunks metadata at master are not persisted.</p>
+
+<p>Appends are ordered:</p>
+
+<p>1) lease and primary
+2) primary serial #&rsquo;s</p>
+
+<p>Master doesn&rsquo;t know about the namespaces either, it is also stored on chunkservers.</p>
+
+<ul>
+<li>No hardlinks/softlinks</li>
+<li>absolute paths</li>
+<li>no datastructure representing directories like inodes</li>
+<li>no datastructure to enumerate contents of one directory</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[log structured file system]]></title>
+    <link href="http://goyalankit.github.io/notes-blog/blog/2014/09/26/log-structured-file-system/"/>
+    <updated>2014-09-26T01:07:15+05:30</updated>
+    <id>http://goyalankit.github.io/notes-blog/blog/2014/09/26/log-structured-file-system</id>
+    <content type="html"><![CDATA[<p>In LFS, log is the only structure on disk. The log is divided into segments (to maintain space for large files) where data is written sequentially. <strong>segment cleaner</strong> compresses the information from heavily fragmented code.</p>
+
+<ul>
+<li>Log also stores indexing information so that the files can be read back with efficiency comparable to current file systems.</li>
+</ul>
+
+
+<p>LFS is based on assumption that files are cached in main memory, so the majority of traffic write traffic which is efficient since we are writing sequentially and eliminating seeks in the disk.</p>
+
+<ul>
+<li>Sprite LFS uses 60-75% of the disk bandwith where as unix file system uses about 5-10% since most of the time is spent in seeking.</li>
+</ul>
+
+
+<hr />
+
+<p>The main challenge of LFS is to ensure that there are always large extents of free space available for writing new data. Large extents called <em>segments</em> are used, where segment cleaner continually regenerates empty segments by compressing the live data from heavily fragmented segements.</p>
+
+<blockquote><p>File system is governed by two basic building blocks: technology and workload.</p></blockquote>
+
+<p>Three components that are significant for file system design:</p>
+
+<ol>
+<li><strong>Processors</strong>- getting faster and fater, putting more pressure on memory</li>
+<li><strong>Main Memory</strong> - Can cache files and change the predominant type of data, like more writes than reads, so you can optimize you FS for writes</li>
+<li><strong>Disks</strong> - well that&rsquo;s where you store your data, they have two components:
+
+<ul>
+<li>Transfer Bandwith -  can be improved using disk arrays and parallel-head disks.</li>
+<li>Access Time - depends on mechanical head (at the time of publishing).</li>
+</ul>
+</li>
+</ol>
+
+
+<hr />
+
+<ul>
+<li>Unix file system writes metadata structures such as directories and inodes synchronously, which is not good for lot of small files.</li>
+<li>LFS buffers a sequence of file system changes in the file cache and writes them sequentailly in a single disk operation.</li>
+</ul>
+
+
+<h2>Key Issues</h2>
+
+<ol>
+<li>Information Retrieval  - uses inodes and maintains a inode map which contains the location of inodes.</li>
+<li>Large free space</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[/udev notes]]></title>
     <link href="http://goyalankit.github.io/notes-blog/blog/2014/09/04/slash-udev-notes/"/>
-    <updated>2014-09-04T02:13:15-05:00</updated>
+    <updated>2014-09-04T12:43:15+05:30</updated>
     <id>http://goyalankit.github.io/notes-blog/blog/2014/09/04/slash-udev-notes</id>
     <content type="html"><![CDATA[<h3>Problems with <code>/dev</code></h3>
 
@@ -76,7 +213,7 @@
   <entry>
     <title type="html"><![CDATA[The Unix Time-Sharing System Notes]]></title>
     <link href="http://goyalankit.github.io/notes-blog/blog/2014/09/03/the-unix-time-sharing-system-notes/"/>
-    <updated>2014-09-03T00:19:07-05:00</updated>
+    <updated>2014-09-03T10:49:07+05:30</updated>
     <id>http://goyalankit.github.io/notes-blog/blog/2014/09/03/the-unix-time-sharing-system-notes</id>
     <content type="html"><![CDATA[<p><strong>source</strong>: <a href="http://cm.bell-labs.com/cm/cs/who/dmr/cacm.html">http://cm.bell-labs.com/cm/cs/who/dmr/cacm.html</a><br/>
 <strong>published</strong>: ACM 1974</p>
@@ -237,6 +374,14 @@ i-list (system table)
 
 <p><img class="left <a" src="href="http://i.imgur.com/C9dGPuy.png">http://i.imgur.com/C9dGPuy.png</a>&#8221; width=&#8221;420&#8221;>
 <img class="<a" src="href="http://i.imgur.com/wob4kNr.png">http://i.imgur.com/wob4kNr.png</a>&#8221; width=&#8221;420&#8221;></p>
+
+<h3>mkfs</h3>
+
+<p>From man page:</p>
+
+<blockquote><p>mkfs is used to build a linux filesystem on a device, usually a hard disk partition. mkfs is usually a front-end for various filesystem builders (mkfs.fstype).</p></blockquote>
+
+<p>The filesystem specific commands may be invoked directly. The convention is to name the commands as <code>mkfs.&lt;fs-type&gt;</code></p>
 ]]></content>
   </entry>
   

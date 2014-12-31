@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: make | learn]]></title>
+  <link href="http://goyalankit.github.io/notes-blog/blog/categories/make/atom.xml" rel="self"/>
+  <link href="http://goyalankit.github.io/notes-blog/"/>
+  <updated>2015-01-01T02:19:53+05:30</updated>
+  <id>http://goyalankit.github.io/notes-blog/</id>
+  <author>
+    <name><![CDATA[Ankit]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Make notes]]></title>
+    <link href="http://goyalankit.github.io/notes-blog/blog/2014/10/27/make-notes/"/>
+    <updated>2014-10-27T23:14:03+05:30</updated>
+    <id>http://goyalankit.github.io/notes-blog/blog/2014/10/27/make-notes</id>
+    <content type="html"><![CDATA[<p>Makefile basic structure
+<code>
+target: source
+  command
+</code></p>
+
+<p>PHONY prevents <code>rm</code> to be executed each time, <code>make clean</code> is called. Consider a case when there are no <code>.o</code> files, <code>make clean</code> will still execute <code>rm</code> otherwise.
+<code>
+.PHONY
+clean:
+  rm *.o
+</code></p>
+
+<p>Get the dependencies source for a given file.
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gcc -M test.cpp&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;better&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;g++ -MM main.cpp -std=gnu++11&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;
+</span><span class='line'>Continue making in case of errors
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;make -i</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Multithreaded make
+<code>
+make -j N
+</code></p>
+
+<p>diction - spell checker</p>
+]]></content>
+  </entry>
+  
+</feed>

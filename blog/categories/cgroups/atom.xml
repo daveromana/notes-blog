@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: cgroups | learn]]></title>
+  <link href="http://goyalankit.github.io/notes-blog/blog/categories/cgroups/atom.xml" rel="self"/>
+  <link href="http://goyalankit.github.io/notes-blog/"/>
+  <updated>2015-01-01T02:19:53+05:30</updated>
+  <id>http://goyalankit.github.io/notes-blog/</id>
+  <author>
+    <name><![CDATA[Ankit]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[cgroup basics]]></title>
+    <link href="http://goyalankit.github.io/notes-blog/blog/2014/09/16/cgroup-basics/"/>
+    <updated>2014-09-16T05:38:43+05:30</updated>
+    <id>http://goyalankit.github.io/notes-blog/blog/2014/09/16/cgroup-basics</id>
+    <content type="html"><![CDATA[<p>Source: <a href="https://www.kernel.org/doc/Documentation/cgroups/cgroups.txt">https://www.kernel.org/doc/Documentation/cgroups/cgroups.txt</a></p>
+
+<h1>CGROUPS</h1>
+
+<p>Control <strong>Groups</strong> provide a mechanism for aggregation/participating sets of tasks, and all their future children, into hierarchical groups with specialized behaviour.</p>
+
+<hr />
+
+<h1>Definitions</h1>
+
+<h3>cgroup</h3>
+
+<p>A <strong>cgroup</strong> associates a set of tasks with a set of parameters for one or more subsystems.</p>
+
+<table>
+<thead>
+<tr>
+<th>Term              </th>
+<th> Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Set of Tasks      </td>
+<td> process ids</td>
+</tr>
+<tr>
+<td>Set of parameters </td>
+<td> 1 or 2 CPUs</td>
+</tr>
+<tr>
+<td>Subsystem         </td>
+<td> CPUSET, MEMORY % or nodes.</td>
+</tr>
+</tbody>
+</table>
+
+
+<hr />
+
+<h3>subsystem</h3>
+
+<p>A <strong>subsystem</strong> is a module that makes use of the task grouping facilities provided by cgroup to treat group of tasks in particular ways.</p>
+
+<ul>
+<li>c<code>**group**</code> provides the grouping of tasks with a set of parameters.</li>
+</ul>
+
+
+<p>A subsystem is typically a <code>"resource controller"</code> that schedules a resource or applies per-cgroup limits. But it may be anything that wants to act on a group of processes e.g. a virtualization subsystem.</p>
+
+<h3>Hierarchy</h3>
+
+<p>A <strong>hierarchy</strong> is a set of cgroups arranged in a tree, such that every task in the system is in exactly one of the cgroups in the hierarchy, and a set of subsystems; each sub-system has system specific state attached to each cgroup in the hierarchy. Each hierarchy has an instance of the cgroup virtual filesystem associated with it.</p>
+
+<p>Rule 1. A single hierarchy can have one or more subsystems attached to it.</p>
+
+<p>Example: You create a single hierarchy for memory and cpu. It&rsquo;s good if you have one to one mapping. You can have:</p>
+
+<ol>
+<li><code>/cg1</code>: 40% memory, 60% CPU</li>
+<li><code>/cg2</code>: 60% memory, 40% CPU</li>
+</ol>
+
+
+<p><img class="<a" src="href="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Resource_Management_Guide/images/RMG-rule1.png">https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Resource_Management_Guide/images/RMG-rule1.png</a>&#8221; width=&#8221;500&#8221;></p>
+
+<p>Rule 2: Any single subsystem (such as cpu) subsystem cannot be attached to more than one hierarchy if one of those hierarchies has a different subsystem attached to it already.</p>
+
+<p><img class="<a" src="href="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Resource_Management_Guide/images/RMG-rule2.png">https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Resource_Management_Guide/images/RMG-rule2.png</a>&#8221; width=&#8221;500&#8221;></p>
+
+<p>Rule 3: A task can belong to only one cgroup in a hierarchy. All tasks on a system by default are member of default cgroup of that hierarchy, which is known as root cgroup.</p>
+
+<p><img class="<a" src="href="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Resource_Management_Guide/images/RMG-rule3.png">https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Resource_Management_Guide/images/RMG-rule3.png</a>&#8221; width=&#8221;500&#8221;></p>
+
+<p>Rule 4: Any process that forks itself creates a child task. By default child task inherits the cgroup membership of its parent but can be moved to different cgroups as needed.</p>
+
+<p><img class="<a" src="href="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Resource_Management_Guide/images/RMG-rule4.png">https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Resource_Management_Guide/images/RMG-rule4.png</a>&#8221; width=&#8221;500&#8221;></p>
+
+<p>source: <a href="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Resource_Management_Guide/sec-Relationships_Between_Subsystems_Hierarchies_Control_Groups_and_Tasks.html">https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Resource_Management_Guide/sec-Relationships_Between_Subsystems_Hierarchies_Control_Groups_and_Tasks.html</a></p>
+]]></content>
+  </entry>
+  
+</feed>

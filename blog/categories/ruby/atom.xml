@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ruby | learn]]></title>
+  <link href="http://goyalankit.github.io/notes-blog/blog/categories/ruby/atom.xml" rel="self"/>
+  <link href="http://goyalankit.github.io/notes-blog/"/>
+  <updated>2015-01-01T02:19:53+05:30</updated>
+  <id>http://goyalankit.github.io/notes-blog/</id>
+  <author>
+    <name><![CDATA[Ankit]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby Notes]]></title>
+    <link href="http://goyalankit.github.io/notes-blog/blog/2014/11/07/ruby-notes/"/>
+    <updated>2014-11-07T09:20:50+05:30</updated>
+    <id>http://goyalankit.github.io/notes-blog/blog/2014/11/07/ruby-notes</id>
+    <content type="html"><![CDATA[<h2>Lambdas vs Procs</h2>
+
+<blockquote><p>Both are proc objects</p></blockquote>
+
+<pre><code class="ruby">l = lambda {|name| puts "hello #{name}"}
+p = proc   {|name| puts "hello #{name}"}
+
+l # =&gt; #&lt;Proc:0x007ff16389da58@-:1 (lambda)&gt;
+p # =&gt; #&lt;Proc:0x007ff16389da30@-:2&gt;
+</code></pre>
+
+<blockquote><p>Return behaves differently</p></blockquote>
+
+<p><strong>lambda returns from the context of lambda only.</strong></p>
+
+<pre><code class="ruby">
+def do_it
+  l = lambda do |name|
+    puts "Hello #{name}"
+    return
+  end
+  l.call("World!")
+  puts "Bye World"
+end
+
+do_it
+# &gt;&gt; Hello World!
+# &gt;&gt; Bye World
+</code></pre>
+
+<!--more-->
+
+
+<p><strong>Proc returns from the calling context too.</strong>
+- Note that the bye world is not printed.
+&#8220;`
+def do_it
+  l = proc do |name|
+    puts &ldquo;Hello #{name}&rdquo;
+    return
+  end
+  l.call(&ldquo;World!&rdquo;)
+  puts &ldquo;Bye World&rdquo;
+end</p>
+
+<p>do_it</p>
+
+<h1>>> Hello World!</h1>
+
+<p>&#8220;`</p>
+]]></content>
+  </entry>
+  
+</feed>

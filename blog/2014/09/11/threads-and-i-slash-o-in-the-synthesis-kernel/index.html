@@ -1,0 +1,456 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Threads and Input/Output in the Synthesis Kernel - learn</title>
+  <meta name="author" content="Ankit">
+
+  
+  <meta name="description" content="Source: http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.51.3887
+Published: 1989 Synthesis operating system kernel combines several techniques &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://goyalankit.github.io/notes-blog/blog/2014/09/11/threads-and-i-slash-o-in-the-synthesis-kernel/">
+  <link href="/notes-blog/favicon.png" rel="icon">
+  <link href="/notes-blog/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+   <link href="/notes-blog/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <script src="/notes-blog/javascripts/modernizr-2.0.js"></script>
+  <script src="/notes-blog/javascripts/ender.js"></script>
+  <script src="/notes-blog/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="atom.xml" rel="alternate" title="learn" type="application/atom+xml">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900' rel='stylesheet' type='text/css'>
+
+
+
+
+  
+
+  </head>
+
+<body   >
+  <header role="banner"><hgroup>
+</hgroup>
+
+</header>
+   <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:goyalankit.github.io/notes-blog" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/notes-blog/">Blog</a></li>
+  <li><a href="/notes-blog/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Threads and Input/Output in the Synthesis Kernel</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-11T08:52:42+05:30" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Source: <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.51.3887">http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.51.3887</a>
+Published: 1989</p>
+
+<p>Synthesis operating system kernel combines several techniques to provide high performance, including kernel code synthesis, fine grain scheduling and optimistic synchronization.</p>
+
+<p>Goals:
+1. High performance
+2. self-tuning capability to dynamic load and configuration changes
+3. a simple, uniform and intuitive model of computation with a high-level interface</p>
+
+<p>Two kind of objects supported by synthesis kernel: Threads and I/O</p>
+
+<h3>Synthesis model of computation</h3>
+
+<p>To support parallel and distributed computing, the threads of execution form a directed graph, in which the nodes are threads and the arcs are data flow channels.</p>
+
+<p>Synthesis threads are threads of execution. Some threads never execute user-level code, but run entirely within kernel to provide additional concurrency for some kernel operations. Threads execute program in quaspace (quasi address space) which also stores data. Finally, I/O devices move data between threads including files and messages.</p>
+
+<h4>No virtual memory in current implementation</h4>
+
+<p>On one physical node, all the synthesis quaspaces are subspaces of one single address space. Kernel blanks out parts of address space that each quaspace is not supposed to see. Since they are part of same quaspace, it is easy to share memory by setting their address mappings.</p>
+
+<h2>Kernel Code Synthesis</h2>
+
+<ol>
+<li>Factoring invariants: bypasses redundant computations.</li>
+<li>The Collapsing layer method eliminates unnecessary procedure calls and context switches, both vertically for layered modules and horizontally for pipelined threads.</li>
+<li>The executable data structure method shorten the data structure traversal time when DS is travelled always the same way.</li>
+</ol>
+
+
+<p>Synthesis kernel can be devided into a number of (collections of procedures and data). These collection of procedures are called - quajects that encapsulate hardware resources (provide interface to hardware through quajects). Important quajects include threads and I/O devices servers.</p>
+
+<p>Threads (quajects, that encapsulate hardware) are abstraction of CPU. The device servers are abstraction of I/O devices. Except from threads, quajects consist only of procedures and data.</p>
+
+<p>quajects don&rsquo;t support inheritance or any other feature, events such as interrupts start the threads that animate the quajects and do work.</p>
+
+<p>Building blocks of quajects:</p>
+
+<ol>
+<li>monitors, queues and schedulers.</li>
+<li>switches (equivalent to C switch statement, direct interrupts to the appropriate servie routines), pumps (contains thread that actively copies its input into its output.) and guages (counts events like procedure calls, data arrival and interrupts; used by scheduler).</li>
+</ol>
+
+
+<p>pumps connect passive producers to passive consumers.</p>
+
+<h3>Queues</h3>
+
+<p>Queue Type => Synchronous (blocks at empty or full) and Asynchronous(signals at those conditions) => dedicated (only 1 producer or consumer, omits synchronization) and optimistic queues (accepts queue insert and delete from multiple prod;cons;)</p>
+
+<h3>Threads are created by <strong>Quaject Creator</strong> in 3 stages</h3>
+
+<ol>
+<li><strong>Allocation</strong> - allocate memory - for quaject and procedures.</li>
+<li><strong>Factorization</strong> - uses factorizing invariants to substitute constants into quaject&rsquo;s code templates.</li>
+<li><strong>Optimization</strong> - do peephole optimizations.</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># mnemonic
+</span><span class='line'> -----\|\ -&gt; [  - - \ - | \]  -&gt; [ - - - c \ - c | ] -&gt; [ - - - - c - - c ]</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Quaject Interfacer</h3>
+
+<p>Starts the execution of existing quajects by installing (load procedures and data) them in invoking thread. 4 Stages:</p>
+
+<ol>
+<li>find connecting mechanism (queue, monitor, pump or a simple procedure call) from 1 quaject to another.</li>
+<li>Factorization and Optimization (Run time).</li>
+<li>Dynamic link stage stores synthesized code&rsquo;s entry points to the quajects.</li>
+</ol>
+
+
+<h3>Reducing Synchronization</h3>
+
+<p>Three methods to reduce Synchronization:</p>
+
+<ol>
+<li>Code Isolation (synchronization avoidance) -> kernel synthesis to separate independent modification of DS. e.g., Thread Table Entry (lock global table -> change local tables)</li>
+<li>Procedure Chaining ( &ldquo;&rdquo; ) -> serializes the execution of conflicting threads. Signal during interrupt handling could be dangerous, so chain the prodedure invoked by signal to the end of interrupt handler (replace the return address - effecient.)</li>
+<li>Optimistic Synchronization - update without synchronization, test at the end - if something bad happened -> rollback and retry.</li>
+</ol>
+
+
+<h3>Optimistic Queues</h3>
+
+<p>Queues are important since lot of functionality is implemented using queues. Four types - SP-SC, SP-MC, MP-SC, MP-MC</p>
+
+<ul>
+<li><p><strong>SP-SC</strong> - synchronization is only necessary when queue becomes empty or full. Usually busy wait.
+Solution: update the pointer (Q-head for producer, Q-tail for consumer) at the very end. In later architectures, you may have to put memory fence to ensure store order.</p></li>
+<li><p><strong>MP-SC</strong> - compare-and-swap instruction + retry loop.
+Now producers claim the space first by incrementing the Qhead and if successful they start inserting the elements. Consumers can&rsquo;t trust the head now, so producers update flags corresponding to queue positions indicating if the element is valid.</p></li>
+</ul>
+
+
+<p>Compare and swap is atomic, so they update a local pointer and see if it&rsquo;s valid. If it&rsquo;s valid then they swap it with head. -> all other producers will see the updated head now while the current producer is inserting elements on claimed space.</p>
+
+<h3>Threads</h3>
+
+<p>The thread state is defined by TTE containing register save area, interrupt handlers, error traps and signal vectors; the address map tables, <strong>context-switch-in and out procedures</strong>.</p>
+
+<p>Kernel generates some code for threads in a protected area - custom system calls, synthesized interrupt handlers such as for queue buffering, specialized eror trap handlers and thread calls (start, stop, etc.)</p>
+
+<ul>
+<li>Thread switches to supervisor mode while running kernel call instead of kernel server running it for the thread. Kernel quaspace is made accessible.</li>
+</ul>
+
+
+<p>Waiting queue is spread accross resources and waiting thread&rsquo;s unblocking procedure is chained to the end of interrupts handler.</p>
+
+<h3>Context Switch</h3>
+
+<ol>
+<li><p>Switch only the part of context being used. (most of the processes don&rsquo;t use FP co-processor so don&rsquo;t save state [default synthesized code] until used[then resynthsize code]).</p></li>
+<li><p>use executable data structures to minimize critical path. - No &ldquo;dispatcher&rdquo; - context-switch-out of 1 process contains jmp to context-switch-in for next process.</p></li>
+</ol>
+
+
+<h3>Signal</h3>
+
+<p>Signal is an asynchronous software interrupt sent by a thread to another. Signal system call modifies a general area so that receiving thread can run the signal handler code in used mode.</p>
+
+<h3>Scheduling</h3>
+
+<p>Fine grained quanta to threads - based on &ldquo;need to execute&rdquo; determined by rate at with I/O data flows into and out of its quaspace.</p>
+
+<p>Effective CPU = Quanta to thread / Quanta to all threads</p>
+
+<p>priority -> assigning large quanta or placing in front of ready queue.</p>
+
+<h3>I/O</h3>
+
+<p>At boot time, kernel creates the servers for raw physical devices. A simple example pipelines the raw input from tty to filters. multiple filters may be applied during the process.</p>
+
+<h3>Producer/Consumer in I/O</h3>
+
+<p>Active producer - Passive Consumer (or vice versa). In case of SP-SC, a procedure call from consumer asking producer for data does the job.</p>
+
+<p>For MP-SC or SP-MC, attach monitor at the multiple end resulting in MP-SC or SP-MC queues.</p>
+
+<p>Passive producer - Passive Consumer -> xclock -> clock producer ready to produce time and clock displayer ready to display at all times. We use PUMP here that reads from one end and writes to another.</p>
+
+<h3>Interrupt Handlers</h3>
+
+<p>Each threads has its own synthesized interrupt handellers and system calls. Lot of interrupts can be handelled in current execution thread only so minimal saving of registers is required and it avoid a context switch. During short level interrupt, higher level interrupts may happend and those inerrupts are chained.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ankit</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-11T08:52:42+05:30" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/notes-blog/blog/categories/os/'>os</a>, <a class='category' href='/notes-blog/blog/categories/paper/'>paper</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://goyalankit.github.io/notes-blog/blog/2014/09/11/threads-and-i-slash-o-in-the-synthesis-kernel/" data-via="_goyalankit" data-counturl="http://goyalankit.github.io/notes-blog/blog/2014/09/11/threads-and-i-slash-o-in-the-synthesis-kernel/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/notes-blog/blog/2014/09/10/file-system-continued/" title="Previous Post: file system continued">&laquo; file system continued</a>
+      
+      
+        <a class="basic-alignment right" href="/notes-blog/blog/2014/09/12/cache-basics/" title="Next Post: cache basics">cache basics &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section id="titles">
+  <a href="http://goyalankit.github.io/notes-blog" title="learn"><img id="logo" src="http://goyalankit.github.io/notes-blog/images/logo.png" /></a>
+  <h1 id="site_title"><a href="http://goyalankit.github.io/notes-blog" title="learn">learn</a></h1>
+  <h3 id="site_subtitle">just code</h3>
+</section>
+
+<section id="menu">
+  <ul>
+    <li><i class="fa fa-home fa-lg"></i><a href="http://goyalankit.github.io/notes-blog"> Home </a></li>
+    <li><i class="fa fa-calendar fa-lg"></i><a href="http://goyalankit.github.io/notes-blog/blog/archives/"> Archives </a></li>
+    <li><i class="fa fa-user fa-lg"></i><a href="http://goyalankit.github.io/notes-blog/about/"> About </a></li>
+    <li><i class="fa fa-rss fa-lg"></i><a href="http://goyalankit.github.io/notes-blog/atom.xml"> Feed </a></li>
+  </ul>
+</section>
+
+<section id="social">
+  
+
+  
+
+  
+
+  
+    <a href="https://github.com/goyalankit" title="goyalankit"><i class="fa fa-github fa-2x"></i></a>
+  
+
+  
+
+  
+    <a href="https://twitter.com/_goyalankit" title="_goyalankit"><i class="fa fa-twitter fa-2x"></i></a>
+  
+</section>
+
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/notes-blog/blog/2014/11/18/concurrent-objects/">Concurrent Objects</a>
+      </li>
+    
+      <li class="post">
+        <a href="/notes-blog/blog/2014/11/13/papi-native-hardware-counters/">Papi native hardware counters</a>
+      </li>
+    
+      <li class="post">
+        <a href="/notes-blog/blog/2014/11/12/fast-paxos/">Fast Paxos</a>
+      </li>
+    
+      <li class="post">
+        <a href="/notes-blog/blog/2014/11/07/ruby-notes/">Ruby Notes</a>
+      </li>
+    
+      <li class="post">
+        <a href="/notes-blog/blog/2014/11/07/spanner-googles-globally-distributed-database/">Spanner: Google&#8217;s Globally Distributed Database</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/goyalankit">@goyalankit</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'goyalankit',
+            count: 4,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/notes-blog/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Ankit -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'goyalankit';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://goyalankit.github.io/notes-blog/blog/2014/09/11/threads-and-i-slash-o-in-the-synthesis-kernel/';
+        var disqus_url = 'http://goyalankit.github.io/notes-blog/blog/2014/09/11/threads-and-i-slash-o-in-the-synthesis-kernel/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

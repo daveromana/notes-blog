@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: map-reduce | learn]]></title>
+  <link href="http://goyalankit.github.io/notes-blog/blog/categories/map-reduce/atom.xml" rel="self"/>
+  <link href="http://goyalankit.github.io/notes-blog/"/>
+  <updated>2015-01-01T02:19:53+05:30</updated>
+  <id>http://goyalankit.github.io/notes-blog/</id>
+  <author>
+    <name><![CDATA[Ankit]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[map reduce]]></title>
+    <link href="http://goyalankit.github.io/notes-blog/blog/2014/11/07/map-reduce/"/>
+    <updated>2014-11-07T00:01:15+05:30</updated>
+    <id>http://goyalankit.github.io/notes-blog/blog/2014/11/07/map-reduce</id>
+    <content type="html"><![CDATA[<p><strong>map</strong>: processes a key/value pair to generate a set of intermediate key/value pairs.</p>
+
+<p><strong>reduce</strong>: merges all intermediate values associated with same intermediate keys.</p>
+
+<pre><code>map    (k1, v1)       -&gt; list(k2, v2)
+reduce (k2, list(v2)) -&gt; list(v2)
+</code></pre>
+
+<p>All the mappers have to finish before reduces can end.</p>
+
+<!--more-->
+
+
+<p><img class="<a" src="href="http://i.imgur.com/At7gcgY.png?1">http://i.imgur.com/At7gcgY.png?1</a>&#8221;></p>
+
+<ul>
+<li>Mappers based on input sets</li>
+<li>Reduces based on number of output files</li>
+<li>Potentially less robust, you lose type information from map to reduce. Possibility of garbage values.</li>
+<li>Mappers read from GFS but write to local file system. Since it&rsquo;s faster to write locally.</li>
+<li>Reducers again write to GFS.</li>
+</ul>
+
+
+<h3>Criticism</h3>
+
+<ul>
+<li>Step backwards in programming paradigm.
+
+<ul>
+<li>schemas are good.</li>
+</ul>
+</li>
+<li>Consistency model. Garbage values can creep in.</li>
+<li>No query language.</li>
+<li>More on the database side of the map-reduce.</li>
+<li>No indexes are used.</li>
+<li>Skew is the real problem.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

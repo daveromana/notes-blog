@@ -4,7 +4,7 @@
   <title><![CDATA[Category: hello | learn]]></title>
   <link href="http://goyalankit.github.io/notes-blog/blog/categories/hello/atom.xml" rel="self"/>
   <link href="http://goyalankit.github.io/notes-blog/"/>
-  <updated>2014-09-05T03:13:25-05:00</updated>
+  <updated>2015-01-01T02:19:53+05:30</updated>
   <id>http://goyalankit.github.io/notes-blog/</id>
   <author>
     <name><![CDATA[Ankit]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[hola mundo]]></title>
-    <link href="http://goyalankit.github.io/notes-blog/blog/2014/08/31/hola-mundo/"/>
-    <updated>2014-08-31T20:29:11-05:00</updated>
-    <id>http://goyalankit.github.io/notes-blog/blog/2014/08/31/hola-mundo</id>
+    <link href="http://goyalankit.github.io/notes-blog/blog/2014/09/01/hola-mundo/"/>
+    <updated>2014-09-01T06:59:11+05:30</updated>
+    <id>http://goyalankit.github.io/notes-blog/blog/2014/09/01/hola-mundo</id>
     <content type="html"><![CDATA[<p><div class='problem-box'> <b> Problem: </b> the hola mundo program. </div></p>
 
 <p><div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">class</span> <span class="nc">HolaMundo</span> <span class="o">{</span>
